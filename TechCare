@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Computer & Laptop Maintenance Guide</title>
+  <meta
+    name="description"
+    content="Quick tips, clear tutorials, and smart solutions to keep your computer and laptop running smoothly."
+  />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a {
+      color: #4fc3f7;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover,
+    a:focus {
+      color: #81d4fa;
+      outline: none;
+    }
+
+    /*scrollbar*/
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1f1f1f;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #4fc3f7;
+      border-radius: 10px;
+      border: 2px solid #1f1f1f;
+    }
+
+    /*head and nav*/
+    header {
+      background: #1f2a38;
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .logo h1 {
+      font-size: 28px;
+      letter-spacing: 1.5px;
+      color: #e3f2fd;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    nav ul li a {
+      font-size: 17px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: #bbdefb;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    nav ul li a:hover,
+    nav ul li a:focus {
+      background-color: #4fc3f7;
+      color: #121212;
+    }
+
+    /*hero*/
+    #home {
+      background: linear-gradient(135deg, #27343b, #394b59);
+      padding: 120px 20px 100px;
+      text-align: center;
+      color: #e1e8eb;
+    }
+
+    #home h2 {
+      font-size: 3.2rem;
+      margin-bottom: 20px;
+      letter-spacing: 1.2px;
+      font-weight: 700;
+    }
+
+    #home p {
+      font-size: 1.3rem;
+      max-width: 720px;
+      margin: 0 auto;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #b0bec5;
+    }
+
+    /*section*/
+    section {
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title h2 {
+      font-size: 2.4rem;
+      color: #90a4ae;
+      text-align: center;
+      margin-bottom: 50px;
+      font-weight: 600;
+      letter-spacing: 1.1px;
+    }
+
+    /*quicktip*/
+    #tips ul {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+      padding-left: 0;
+      margin-top: 10px;
+    }
+
+    #tips ul li {
+      background: #1e272e;
+      padding: 28px 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+      cursor: default;
+      transition: background-color 0.2s ease;
+    }
+
+    #tips ul li:hover {
+      background-color: #344955;
+    }
+
+    #tips ul li h3 {
+      font-size: 1.25rem;
+      margin-bottom: 14px;
+      color: #4fc3f7;
+    }
+
+    #tips ul li p {
+      font-size: 1rem;
+      color: #cfd8dc;
+      line-height: 1.4;
+    }
+
+    /*turotial*/
+    .tutorials-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+    }
+
+    .tutorial-card {
+      background: #1c232a;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .tutorial-card:hover {
+      background-color: #2e3a47;
+    }
+
+    .tutorial-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      filter: brightness(0.9);
+      transition: filter 0.3s ease;
+    }
+
+    .tutorial-card:hover img {
+      filter: brightness(1);
+    }
+
+    .card-content {
+      padding: 20px 24px;
+    }
+
+    .tutorial-card h3 {
+      font-size: 1.5rem;
+      color: #4fc3f7;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .tutorial-card a {
+      font-weight: 500;
+      font-size: 1rem;
+      color: #81d4fa;
+      display: inline-block;
+      margin-top: 6px;
+      transition: color 0.3s ease;
+    }
+
+    .tutorial-card a:hover {
+      color: #b3e5fc;
+    }
+
+    /*video */
+    #video-section {
+      text-align: center;
+      padding: 60px 20px;
+      background: #202b38;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+      max-width: 1000px;
+      margin: 50px auto;
+    }
+
+    #video-section h2 {
+      font-size: 2.4rem;
+      margin-bottom: 30px;
+      color: #90a4ae;
+      font-weight: 600;
+    }
+
+    iframe {
+      width: 100%;
+      height: 480px;
+      border-radius: 10px;
+      border: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    iframe:hover,
+    iframe:focus {
+      outline: none;
+      box-shadow: 0 0 8px #4fc3f7;
+    }
+
+    /*solution list*/
+    #solutions ul {
+      max-width: 850px;
+      margin: 0 auto;
+      list-style: none;
+      margin-top: 15px;
+    }
+
+    #solutions ul li {
+      background: #212f3e;
+      margin-bottom: 18px;
+      padding: 20px 25px;
+      border-radius: 10px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
+      transition: background-color 0.2s ease;
+      font-size: 1.1rem;
+      color: #cfd8dc;
+      cursor: default;
+    }
+
+    #solutions ul li strong {
+      color: #4fc3f7;
+    }
+
+    #solutions ul li:hover {
+      background-color: #2c3e50;
+    }
+
+    /*foot*/
+    footer {
+      background: #1f2a38;
+      padding: 20px;
+      text-align: center;
+      color: #b0bec5;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-top: 80px;
+    }
+
+    /*respo*/
+    @media (max-width: 720px) {
+      #home h2 {
+        font-size: 2.5rem;
+      }
+      #home p {
+        font-size: 1.1rem;
+      }
+      iframe {
+        height: 320px;
+      }
+      .tutorial-card img {
+        height: 180px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      nav ul {
+        flex-direction: column;
+        gap: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <div class="logo"><h1>TechCare</h1></div>
+      <ul>
+        <li><a href="#home" tabindex="1">Home</a></li>
+        <li><a href="#tips" tabindex="2">Tips</a></li>
+        <li><a href="#tutorials" tabindex="3">Tutorials</a></li>
+        <li><a href="#solutions" tabindex="4">Solutions</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home" role="banner">
+    <h2>Essential Guide to Computer & Laptop Maintenance</h2>
+    <p>
+      Get quick tips, clear tutorials, and smart solutions to keep your computer running smoothly. Learn to maintain, troubleshoot, and optimize your devices with confidence.
+    </p>
+  </section>
+
+  <section id="tips" aria-label="Quick Maintenance Tips">
+    <div class="section-title"><h2>Quick Maintenance Tips</h2></div>
+    <ul>
+      <li>
+        <h3>Update Your System</h3>
+        <p>Keep your OS, drivers, and applications updated for security and performance.</p>
+      </li>
+      <li>
+        <h3>Run Antivirus Scans</h3>
+        <p>Scan your system regularly to detect and remove malware threats.</p>
+      </li>
+      <li>
+        <h3>Clean Hardware</h3>
+        <p>Remove dust from vents, keyboard, and components to prevent overheating.</p>
+      </li>
+      <li>
+        <h3>Backup Data</h3>
+        <p>Use external drives or cloud storage to prevent loss from failure.</p>
+      </li>
+      <li>
+        <h3>Monitor Disk Health</h3>
+        <p>Check SMART status, delete unnecessary files, and defragment when necessary.</p>
+      </li>
+      <li>
+        <h3>Optimize Startup</h3>
+        <p>Disable unneeded startup programs to speed boot time.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section id="tutorials" aria-label="Step by Step Tutorials">
+    <div class="section-title"><h2>Step‑by‑Step Tutorials</h2></div>
+    <div class="tutorials-container">
+      <article class="tutorial-card" tabindex="0" role="article" aria-label="How to Clean Your Laptop’s Fan">
+        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80" alt="Cleaning laptop fan" />
+        <div class="card-content">
+          <h3>How to Clean Your Laptop’s Fan</h3>
+          <a href="#" aria-label="Read more about How to Clean Your Laptop’s Fan">Read More →</a>
+        </div>
+      </article>
+      <article class="tutorial-card" tabindex="0" role="article" aria-label="How to Fix Slow Computer Performance">
+        <img src="https://images.unsplash.com/photo-1518773553398-650c184e64d3?auto=format&fit=crop&w=600&q=80" alt="Slow computer performance" />
+        <div class="card-content">
+          <h3>How to Fix Slow Computer Performance</h3>
+          <a href="#" aria-label="Read more about How to Fix Slow Computer Performance">Read More →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="video-section" aria-label="Maintenance Tutorial Video">
+    <h2>Watch Our Tutorial Video</h2>
+    <iframe
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+      title="Tutorial Video"
+      allowfullscreen
+      loading="lazy"
+      aria-describedby="video-description"
+    ></iframe>
+    <p id="video-description" style="margin-top:10px; color:#90a4ae;">
+      Learn practical maintenance techniques to keep your laptop in top condition.
+    </p>
+  </section>
+
+  <section id="solutions" aria-label="Troubleshooting Solutions">
+    <div class="section-title"><h2>Smart Troubleshooting Solutions</h2></div>
+    <ul>
+      <li><strong>Device Won’t Start:</strong> Try a hard reset, check power cables, battery, and connections.</li>
+      <li><strong>Slow Computer:</strong> Restart, close unnecessary apps, clean disk, check resource usage.</li>
+      <li><strong>Wi-Fi Issues:</strong> Reset router, reposition devices, update network drivers.</li>
+      <li><strong>Overheating:</strong> Clean fans, ensure airflow, use a cooling pad.</li>
+      <li><strong>Blue Screen / Crashes:</strong> Check for driver updates, run memory test, inspect disk health.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>2025 TechCare Man</p>
+  </footer>
+
+</body>
+</html>
