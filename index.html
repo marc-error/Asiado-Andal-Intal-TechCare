@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Expert laptop troubleshooting guides and repair solutions. Trusted by 50,000+ users worldwide with 98% success rate. Get 24/7 expert support.">
+    <title>LaptopFix - Expert Laptop Troubleshooting & Repair Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="/" class="logo" data-testid="link-home">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                </div>
+                <span class="logo-text">LaptopFix</span>
+            </a>
+            
+           <div class="nav-links desktop-nav">
+                <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/index.html" class="nav-link active" data-testid="link-nav-home">Home</a>
+                <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/guides.html" class="nav-link" data-testid="link-nav-troubleshooting">Troubleshooting</a>
+                <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/faq.html" class="nav-link" data-testid="link-nav-faq">FAQ</a>
+                <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/blog.html" class="nav-link" data-testid="link-nav-blog">Blog</a>
+                <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/contact.html" class="nav-link" data-testid="link-nav-contact">Contact</a>
+            </div>
+
+            <div class="nav-actions">
+                <div class="support-badge desktop-only">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <span>24/7 Support</span>
+                </div>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" data-testid="button-mobile-menu">
+                    <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/index.html" class="nav-link" data-testid="link-mobile-home">Home</a>
+            <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/guides.html" class="nav-link" data-testid="link-mobile-troubleshooting">Troubleshooting</a>
+            <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/faq.html" class="nav-link" data-testid="link-mobile-faq">FAQ</a>
+            <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/blog.html" class="nav-link" data-testid="link-mobile-blog">Blog</a>
+            <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/contact.html" class="nav-link" data-testid="link-mobile-contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background"></div>
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <div class="hero-text">
+                <div class="badge certified-badge" data-testid="badge-certified">
+                    ✓ Certified Technicians | 50K+ Issues Resolved | 4.9★ Rating
+                </div>
+                
+                <h1>Expert Laptop Solutions at Your Fingertips</h1>
+                
+                <p class="hero-description">
+                    Solve any laptop problem with our comprehensive guides. Trusted by 50,000+ users worldwide. Get expert help in minutes, not hours.
+                </p>
+                
+                <div class="hero-buttons">
+                    <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/guides.html" class="btn btn-primary btn-lg" data-testid="button-get-expert-help">
+                        Get Expert Help Now
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                    <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/faq.html" class="btn btn-outline btn-lg" data-testid="button-browse-solutions">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        Browse Solutions
+                    </a>
+                </div>
+
+                <div class="hero-search">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="search" placeholder="Search 1000+ troubleshooting guides..." data-testid="input-hero-search">
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        <span>1,000+ Guides</span>
+                    </div>
+                    <div class="stat-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        <span>98% Success Rate</span>
+                    </div>
+                    <div class="stat-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        <span>24/7 Support</span>
+                    </div>
+                    <div class="stat-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <span>Expert Verified</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1,000+</div>
+                    <div class="stat-label">Expert Guides</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Happy Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Expert Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Grid -->
+    <section class="category-section">
+        <div class="container">
+            <h2 class="section-title">Browse by Category</h2>
+            <p class="section-description">Find expert solutions for your specific laptop issue</p>
+            
+            <div class="category-grid">
+                <a href="/guides.html#battery" class="category-card" data-testid="card-category-1">
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="6" width="18" height="12" rx="2" ry="2"></rect>
+                            <line x1="23" y1="13" x2="23" y2="11"></line>
+                        </svg>
+                    </div>
+                    <h3>Battery Issues</h3>
+                    <p>Not charging, rapid drain, battery health</p>
+                    <span class="guide-count">150+ guides</span>
+                </a>
+                <a href="/guides.html#overheating" class="category-card" data-testid="card-category-2">
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+                        </svg>
+                    </div>
+                    <h3>Overheating</h3>
+                    <p>Fan noise, thermal throttling, cooling</p>
+                    <span class="guide-count">120+ guides</span>
+                </a>
+                <a href="/guides.html#performance" class="category-card" data-testid="card-category-3">
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Performance</h3>
+                    <p>Slow startup, freezing, lag issues</p>
+                    <span class="guide-count">200+ guides</span>
+                </a>
+                <a href="/guides.html#display" class="category-card" data-testid="card-category-4">
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <h3>Display Problems</h3>
+                    <p>Screen flickering, dead pixels, brightness</p>
+                    <span class="guide-count">180+ guides</span>
+                </a>
+                <a href="/guides.html#keyboard" class="category-card" data-testid="card-category-5">
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <h3>Keyboard & Mouse</h3>
+                    <p>Keys not working, touchpad issues</p>
+                    <span class="guide-count">140+ guides</span>
+                </a>
+                <a href="/guides.html#software" class="category-card" data-testid="card-category-6">
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </div>
+                    <h3>Software Errors</h3>
+                    <p>Blue screen, crashes, boot problems</p>
+                    <span class="guide-count">250+ guides</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">Trusted by 50,000+ Users Worldwide</h2>
+            <p class="section-description">Join thousands of satisfied users who've solved their laptop problems with our expert guides</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card" data-testid="card-testimonial-1">
+                    <div class="rating">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <p class="testimonial-text">
+                        "The battery troubleshooting guide saved me hundreds of dollars! Clear, step-by-step instructions that actually worked. My laptop is running like new again joke lang po."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="avatar">SJ</div>
+                        <div class="author-info">
+                            <div class="author-name">
+                                Marc Asiado
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="author-role">Front/Backend Developer</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card" data-testid="card-testimonial-2">
+                    <div class="rating">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <p class="testimonial-text">
+                        "Best tech support resource I've found. Fixed my overheating issue in under 30 minutes. The guides are professional and easy to follow, even for complex problems."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="avatar">MC</div>
+                        <div class="author-info">
+                            <div class="author-name">
+                                Lawrence Intal
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="author-role">404</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card" data-testid="card-testimonial-3">
+                    <div class="rating">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <p class="testimonial-text">
+                        "I was about to buy a new laptop because of performance issues. Thanks to these guides, I solved everything myself and learned a lot in the process. Highly recommend!"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="avatar">ER</div>
+                        <div class="author-info">
+                            <div class="author-name">
+                                Glenn Andal
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="author-role">404</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-in">
+                <span>As featured in</span>
+                <span class="brand">TechCare</span>
+                <span class="brand">SLSU</span>
+                <span class="brand">BIT</span>
+                <span class="brand">3B</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Preview -->
+    <section class="blog-section">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Latest Tech Tips & Insights</h2>
+                    <p class="section-description">Expert advice to keep your laptop running at its best</p>
+                </div>
+                <a href="/blog.html" class="btn btn-outline" data-testid="button-view-all-posts">
+                    View All Posts
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="blog-grid">
+                <div class="blog-card" data-testid="card-blog-post-1">
+                    <div class="blog-meta">
+                        <span class="blog-category">Performance</span>
+                        <span>•</span>
+                        <span class="read-time">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            5 min read
+                        </span>
+                    </div>
+                    <h3>10 Ways to Speed Up Your Slow Laptop</h3>
+                    <p>Discover simple tweaks and optimizations that can dramatically improve your laptop's performance.</p>
+                    <div class="blog-footer">
+                        <span>Dec 15, 2024</span>
+                        <a href="/blog.html#post-1" class="btn-link" data-testid="button-read-post-1">
+                            Read More
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="blog-card" data-testid="card-blog-post-2">
+                    <div class="blog-meta">
+                        <span class="blog-category">Battery</span>
+                        <span>•</span>
+                        <span class="read-time">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            8 min read
+                        </span>
+                    </div>
+                    <h3>Complete Battery Care Guide</h3>
+                    <p>Learn best practices for maintaining your laptop battery and extending its lifespan.</p>
+                    <div class="blog-footer">
+                        <span>Dec 10, 2024</span>
+                        <a href="/blog.html#post-2" class="btn-link" data-testid="button-read-post-2">
+                            Read More
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="blog-card" data-testid="card-blog-post-3">
+                    <div class="blog-meta">
+                        <span class="blog-category">Display</span>
+                        <span>•</span>
+                        <span class="read-time">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            6 min read
+                        </span>
+                    </div>
+                    <h3>Fixing Common Screen Issues</h3>
+                    <p>Troubleshoot flickering, dead pixels, and other display problems with our comprehensive guide.</p>
+                    <div class="blog-footer">
+                        <span>Dec 5, 2024</span>
+                        <a href="/blog.html#post-3" class="btn-link" data-testid="button-read-post-3">
+                            Read More
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="trust-section">
+        <div class="container">
+            <div class="trust-grid">
+                <div class="trust-content">
+                    <div class="badge trust-badge">Trusted Expertise</div>
+                    <h2 class="section-title">Why Choose TechCare?</h2>
+                    <p class="trust-intro">
+                        We've helped over 50,000 users solve their laptop problems with expert-verified guides and reliable support.
+                    </p>
+                    <div class="features-list">
+                        <div class="feature-item" data-testid="feature-0">
+                            <div class="feature-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3>Expert Verified</h3>
+                                <p>All guides reviewed by certified technicians with 10+ years experience</p>
+                            </div>
+                        </div>
+                        <div class="feature-item" data-testid="feature-1">
+                            <div class="feature-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3>Fast Support</h3>
+                                <p>24/7 expert assistance available via chat, email, or phone</p>
+                            </div>
+                        </div>
+                        <div class="feature-item" data-testid="feature-2">
+                            <div class="feature-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3>Community Driven</h3>
+                                <p>50,000+ active users sharing solutions and helping each other</p>
+                            </div>
+                        </div>
+                        <div class="feature-item" data-testid="feature-3">
+                            <div class="feature-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                    <polyline points="17 6 23 6 23 12"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3>Regularly Updated</h3>
+                                <p>Content refreshed weekly to cover latest issues and solutions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-card">
+                    <h3>Security & Trust</h3>
+                    <div class="security-badges">
+                        <div class="security-badge" data-testid="security-badge-0">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            <span>SSL Secured</span>
+                        </div>
+                        <div class="security-badge" data-testid="security-badge-1">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <span>Privacy Protected</span>
+                        </div>
+                        <div class="security-badge" data-testid="security-badge-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <span>Verified Safe</span>
+                        </div>
+                    </div>
+                    <div class="security-footer">
+                        <p>🔒 Your privacy is our priority</p>
+                        <p>✓ No spam, ever</p>
+                        <p>✓ Secure encrypted connection</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="logo">
+                        <div class="logo-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                        </div>
+                        <span class="logo-text">LaptopFix</span>
+                    </a>
+                    <p class="footer-description">
+                        Your trusted resource for laptop troubleshooting and repair solutions. Expert-verified guides helping 50,000+ users solve their tech problems.
+                    </p>
+                    <div class="footer-badges">
+                        <span class="badge-outline">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            SSL Secured
+                        </span>
+                        <span class="badge-outline">Privacy Protected</span>
+                        <span class="badge-outline">Expert Verified</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" data-testid="link-social-facebook">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            </svg>
+                        </a>
+                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" data-testid="link-social-twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                            </svg>
+                        </a>
+                        <a href="https://github.com" target="_blank" rel="noopener noreferrer" data-testid="link-social-github">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="/guides.html" data-testid="link-footer-troubleshooting-guides">Troubleshooting Guides</a></li>
+                        <li><a href="/faq.html" data-testid="link-footer-faq">FAQ</a></li>
+                        <li><a href="/blog.html" data-testid="link-footer-blog">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="/about.html" data-testid="link-footer-about-us">About Us</a></li>
+                        <li><a href="/contact.html" data-testid="link-footer-contact">Contact</a></li>
+                        <li><a href="/privacy.html" data-testid="link-footer-privacy-policy">Privacy Policy</a></li>
+                        <li><a href="/terms.html" data-testid="link-footer-terms-of-service">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; SLSU LUCENA.</p>
+                <div class="footer-contact">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <a href="mailto:techcare@gmail.com" data-testid="link-email-support">techcare@gmial.com</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/script.js"></script>
+</body>
+</html>

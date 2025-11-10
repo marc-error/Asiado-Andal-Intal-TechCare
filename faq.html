@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find answers to common laptop problems. Searchable FAQ with expert solutions for battery, performance, display, and more.">
+    <title>FAQ - Frequently Asked Questions | LaptopFix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .faq-hero {
+            padding: 6rem 0 4rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--background) 100%);
+            text-align: center;
+        }
+        
+        .faq-hero h1 {
+            margin-bottom: 1rem;
+        }
+        
+        .faq-hero p {
+            font-size: 1.25rem;
+            color: var(--muted-foreground);
+            max-width: 42rem;
+            margin: 0 auto 2rem;
+        }
+        
+        .faq-search {
+            max-width: 42rem;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .faq-search svg {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted-foreground);
+        }
+        
+        .faq-search input {
+            width: 100%;
+            height: 3.5rem;
+            padding-left: 3rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            background-color: var(--card);
+            font-size: 1rem;
+            color: var(--foreground);
+        }
+        
+        .faq-content {
+            padding: 4rem 0;
+        }
+        
+        .faq-list {
+            max-width: 56rem;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--card-border);
+            background-color: var(--card);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 1.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--foreground);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            transition: background-color 0.2s;
+        }
+        
+        .faq-question:hover {
+            background-color: var(--muted);
+        }
+        
+        .faq-question svg {
+            flex-shrink: 0;
+            transition: transform 0.3s;
+        }
+        
+        .faq-item.active .faq-question svg {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-answer-content {
+            padding: 0 1.5rem 1.5rem;
+            color: var(--muted-foreground);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="/" class="logo" data-testid="link-home">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                </div>
+                <span class="logo-text">LaptopFix</span>
+            </a>
+
+            <div class="nav-links desktop-nav">
+                <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/index.html" class="nav-link active" data-testid="link-nav-home">Home</a>
+                <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/guides.html" class="nav-link" data-testid="link-nav-troubleshooting">Troubleshooting</a>
+                <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/faq.html" class="nav-link" data-testid="link-nav-faq">FAQ</a>
+                <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/blog.html" class="nav-link" data-testid="link-nav-blog">Blog</a>
+                <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/contact.html" class="nav-link" data-testid="link-nav-contact">Contact</a>
+            </div>
+
+            <div class="nav-actions">
+                <div class="support-badge desktop-only">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <span>24/7 Support</span>
+                </div>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" data-testid="button-mobile-menu">
+                    <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/index.html" class="nav-link" data-testid="link-mobile-home">Home</a>
+            <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/guides.html" class="nav-link" data-testid="link-mobile-troubleshooting">Troubleshooting</a>
+            <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/faq.html" class="nav-link" data-testid="link-mobile-faq">FAQ</a>
+            <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/blog.html" class="nav-link" data-testid="link-mobile-blog">Blog</a>
+            <a href="/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare-1/contact.html" class="nav-link" data-testid="link-mobile-contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="faq-hero">
+        <div class="container">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find quick answers to common laptop problems. Search or browse by topic.</p>
+            <div class="faq-search">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="search" placeholder="Search for answers..." data-testid="input-faq-search">
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Content -->
+    <section class="faq-content">
+        <div class="container">
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Why is my laptop battery draining so fast?</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Fast battery drain can be caused by several factors: high screen brightness, background apps consuming power, outdated drivers, or an aging battery. Start by checking your power settings, reducing screen brightness, and closing unnecessary programs. Run a battery health check in Windows settings to see if your battery needs replacement.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I fix a laptop that won't turn on?</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            First, try a hard reset: disconnect power, remove the battery (if removable), press and hold the power button for 30 seconds, then reconnect everything and try again. If that doesn't work, check your power adapter and cable for damage. The issue could also be related to RAM, so try reseating your RAM modules. If none of these work, you may need professional repair.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What causes laptop overheating and how do I prevent it?</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Overheating is usually caused by dust buildup in cooling vents, heavy workloads, or operating in hot environments. Prevent overheating by: using your laptop on hard, flat surfaces; cleaning air vents regularly; using a cooling pad; avoiding direct sunlight; and closing resource-intensive programs when not needed. If overheating persists, you may need to clean internal fans or replace thermal paste.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Why is my laptop running so slow?</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Slow performance can result from: too many startup programs, insufficient RAM, full hard drive, malware, or outdated hardware. Solutions include: disabling unnecessary startup apps, running disk cleanup, upgrading to an SSD, adding more RAM, running antivirus scans, and updating drivers. Also check if Windows is running updates in the background.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I fix a laptop screen that's flickering?</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Screen flickering can be caused by incompatible or outdated display drivers, incorrect refresh rate settings, or loose display cables. First, update your graphics drivers. Then check your display refresh rate in Windows settings and try different values. If the problem persists, it might be a hardware issue with the display cable or screen itself requiring professional repair.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>My laptop keyboard isn't working. What should I do?</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            For non-working keyboards, try these steps: restart your laptop, check if keyboard is disabled in Device Manager, update keyboard drivers, test in safe mode, and clean under keys if they're sticky. If specific keys don't work, there may be liquid damage or debris. External keyboards can be used as a temporary solution while arranging repair.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How often should I clean my laptop?</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Clean your laptop's exterior and keyboard weekly with a microfiber cloth. Clean air vents every 3-6 months using compressed air. For internal cleaning (fans, heatsinks), do it every 6-12 months depending on your environment. Dusty or pet-friendly homes may require more frequent cleaning. Always power off and unplug before cleaning.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I upgrade my laptop's RAM and storage?</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Most laptops allow RAM upgrades, and many support storage upgrades from HDD to SSD. Check your laptop's manual or manufacturer website for upgrade options. Ultrabooks and some modern laptops have soldered RAM that can't be upgraded. Storage is usually easier to upgrade - replacing an HDD with an SSD provides the biggest performance boost you can make to an older laptop.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="logo">
+                        <div class="logo-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                        </div>
+                        <span class="logo-text">LaptopFix</span>
+                    </a>
+                    <p class="footer-description">
+                        Your trusted resource for laptop troubleshooting and repair solutions. Expert-verified guides helping 50,000+ users solve their tech problems.
+                    </p>
+                    <div class="footer-badges">
+                        <span class="badge-outline">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            SSL Secured
+                        </span>
+                        <span class="badge-outline">Privacy Protected</span>
+                        <span class="badge-outline">Expert Verified</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" data-testid="link-social-facebook">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            </svg>
+                        </a>
+                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" data-testid="link-social-twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                            </svg>
+                        </a>
+                        <a href="https://github.com" target="_blank" rel="noopener noreferrer" data-testid="link-social-github">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="/guides.html" data-testid="link-footer-troubleshooting-guides">Troubleshooting Guides</a></li>
+                        <li><a href="/faq.html" data-testid="link-footer-faq">FAQ</a></li>
+                        <li><a href="/blog.html" data-testid="link-footer-blog">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="/about.html" data-testid="link-footer-about-us">About Us</a></li>
+                        <li><a href="/contact.html" data-testid="link-footer-contact">Contact</a></li>
+                        <li><a href="/privacy.html" data-testid="link-footer-privacy-policy">Privacy Policy</a></li>
+                        <li><a href="/terms.html" data-testid="link-footer-terms-of-service">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 LaptopFix. All rights reserved.</p>
+                <div class="footer-contact">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <a href="mailto:support@laptopfix.com" data-testid="link-email-support">support@laptopfix.com</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/script.js"></script>
+</body>
+</html>
