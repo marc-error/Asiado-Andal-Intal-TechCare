@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse comprehensive laptop troubleshooting guides organized by category. Battery, performance, display, and more expert solutions.">
+    <title>Troubleshooting Guides - LaptopFix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .guides-hero {
+            padding: 6rem 0 4rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--background) 100%);
+            text-align: center;
+        }
+        
+        .guides-hero h1 {
+            margin-bottom: 1rem;
+        }
+        
+        .guides-hero p {
+            font-size: 1.25rem;
+            color: var(--muted-foreground);
+            max-width: 42rem;
+            margin: 0 auto;
+        }
+        
+        .category-section-full {
+            padding: 4rem 0;
+        }
+        
+        .guide-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .guide-item {
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--card-border);
+            background-color: var(--card);
+            text-decoration: none;
+            color: var(--foreground);
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .guide-item:hover {
+            transform: translateX(8px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .guide-info {
+            flex: 1;
+        }
+        
+        .guide-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--foreground);
+        }
+        
+        .guide-description {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+        
+        .guide-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+        
+        .difficulty {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .difficulty-easy {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: rgb(34, 197, 94);
+        }
+        
+        .difficulty-medium {
+            background-color: rgba(234, 179, 8, 0.1);
+            color: rgb(234, 179, 8);
+        }
+        
+        .difficulty-hard {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: rgb(239, 68, 68);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation (same as index.html) -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="/" class="logo" data-testid="link-home">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                </div>
+                <span class="logo-text">LaptopFix</span>
+            </a>
+
+          <div class="nav-links desktop-nav">
+                <a href="../index.html" class="nav-link active" data-testid="link-nav-home">Home</a>
+                <a href="../page/guides.html" class="nav-link" data-testid="link-nav-troubleshooting">Troubleshooting</a>
+                <a href="../page/faq.html" class="nav-link" data-testid="link-nav-faq">FAQ</a>
+                <a href="../page/blog.html" class="nav-link" data-testid="link-nav-blog">Blog</a>
+                <a href="../page/contact.html" class="nav-link" data-testid="link-nav-contact">Contact</a>
+            </div>
+
+            <div class="nav-actions">
+                <div class="support-badge desktop-only">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <span>24/7 Support</span>
+                </div>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" data-testid="button-mobile-menu">
+                    <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="mobile-nav" id="mobile-nav">
+                <a href="../index.html" class="nav-link active" data-testid="link-nav-home">Home</a>
+                <a href="../page/guides.html" class="nav-link" data-testid="link-nav-troubleshooting">Troubleshooting</a>
+                <a href="../page/faq.html" class="nav-link" data-testid="link-nav-faq">FAQ</a>
+                <a href="../page/blog.html" class="nav-link" data-testid="link-nav-blog">Blog</a>
+                <a href="../page/contact.html" class="nav-link" data-testid="link-nav-contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="guides-hero">
+        <div class="container">
+            <h1>Troubleshooting Guides</h1>
+            <p>Expert solutions for all your laptop problems. Browse by category or search for specific issues.</p>
+        </div>
+    </section>
+
+    <!-- Guides by Category -->
+    <section class="category-section-full" id="battery">
+        <div class="container">
+            <h2 class="section-title">Battery Issues</h2>
+            <div class="guide-list">
+                <a href="#" class="guide-item">
+                    <div class="guide-info">
+                        <div class="guide-title">Laptop Not Charging - Complete Fix Guide</div>
+                        <div class="guide-description">Step-by-step solutions for charging problems including adapter, port, and battery issues</div>
+                    </div>
+                    <div class="guide-meta">
+                        <span class="difficulty difficulty-easy">Easy</span>
+                        <span>15 min</span>
+                    </div>
+                </a>
+                <a href="#" class="guide-item">
+                    <div class="guide-info">
+                        <div class="guide-title">Battery Draining Too Fast</div>
+                        <div class="guide-description">Identify and fix rapid battery drain issues with power optimization tips</div>
+                    </div>
+                    <div class="guide-meta">
+                        <span class="difficulty difficulty-easy">Easy</span>
+                        <span>10 min</span>
+                    </div>
+                </a>
+                <a href="#" class="guide-item">
+                    <div class="guide-info">
+                        <div class="guide-title">Battery Health Check & Calibration</div>
+                        <div class="guide-description">Test battery condition and recalibrate for accurate charge reporting</div>
+                    </div>
+                    <div class="guide-meta">
+                        <span class="difficulty difficulty-medium">Medium</span>
+                        <span>30 min</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="category-section-full" id="overheating">
+        <div class="container">
+            <h2 class="section-title">Overheating Problems</h2>
+            <div class="guide-list">
+                <a href="#" class="guide-item">
+                    <div class="guide-info">
+                        <div class="guide-title">Laptop Overheating and Shutting Down</div>
+                        <div class="guide-description">Fix thermal issues with cleaning, cooling solutions, and thermal paste replacement</div>
+                    </div>
+                    <div class="guide-meta">
+                        <span class="difficulty difficulty-medium">Medium</span>
+                        <span>45 min</span>
+                    </div>
+                </a>
+                <a href="#" class="guide-item">
+                    <div class="guide-info">
+                        <div class="guide-title">Fan Making Loud Noise - Troubleshooting</div>
+                        <div class="guide-description">Diagnose and resolve noisy fan issues including cleaning and replacement</div>
+                    </div>
+                    <div class="guide-meta">
+                        <span class="difficulty difficulty-easy">Easy</span>
+                        <span>20 min</span>
+                    </div>
+                </a>
+                <a href="#" class="guide-item">
+                    <div class="guide-info">
+                        <div class="guide-title">CPU Thermal Throttling Fix</div>
+                        <div class="guide-description">Optimize cooling to prevent performance drops from overheating</div>
+                    </div>
+                    <div class="guide-meta">
+                        <span class="difficulty difficulty-hard">Advanced</span>
+                        <span>60 min</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="category-section-full" id="performance">
+        <div class="container">
+            <h2 class="section-title">Performance Issues</h2>
+            <div class="guide-list">
+                <a href="#" class="guide-item">
+                    <div class="guide-info">
+                        <div class="guide-title">Laptop Running Extremely Slow</div>
+                        <div class="guide-description">Speed up your laptop with disk cleanup, startup optimization, and RAM upgrades</div>
+                    </div>
+                    <div class="guide-meta">
+                        <span class="difficulty difficulty-easy">Easy</span>
+                        <span>25 min</span>
+                    </div>
+                </a>
+                <a href="#" class="guide-item">
+                    <div class="guide-info">
+                        <div class="guide-title">Windows Taking Forever to Start</div>
+                        <div class="guide-description">Fix slow boot times by optimizing startup programs and services</div>
+                    </div>
+                    <div class="guide-meta">
+                        <span class="difficulty difficulty-easy">Easy</span>
+                        <span>15 min</span>
+                    </div>
+                </a>
+                <a href="#" class="guide-item">
+                    <div class="guide-info">
+                        <div class="guide-title">Programs Freezing or Not Responding</div>
+                        <div class="guide-description">Resolve application hang issues with memory optimization and driver updates</div>
+                    </div>
+                    <div class="guide-meta">
+                        <span class="difficulty difficulty-medium">Medium</span>
+                        <span>30 min</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+ <!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+
+                <p class="footer-description">
+                    Your trusted resource for laptop troubleshooting and repair solutions. Expert-verified guides helping 50,000+ users solve their tech problems.
+                </p>
+                <div class="footer-badges">
+                    <span class="badge-outline">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                        SSL Secured
+                    </span>
+                    <span class="badge-outline">Privacy Protected</span>
+                    <span class="badge-outline">Expert Verified</span>
+                </div>
+            </div> 
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; SLSU LUCENA.</p>
+            <div class="footer-contact">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <a href="mailto:techcare@gmail.com" data-testid="link-email-support">techcare@gmail.com</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="/script.js"></script>
+</body>
+</html>

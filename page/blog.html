@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Expert laptop tips, maintenance guides, and tech insights. Learn how to keep your laptop running at peak performance.">
+    <title>Blog - Tech Tips & Insights | LaptopFix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .blog-hero {
+            padding: 6rem 0 4rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--background) 100%);
+            text-align: center;
+        }
+        
+        .blog-hero h1 {
+            margin-bottom: 1rem;
+        }
+        
+        .blog-hero p {
+            font-size: 1.25rem;
+            color: var(--muted-foreground);
+            max-width: 42rem;
+            margin: 0 auto;
+        }
+        
+        .blog-content {
+            padding: 4rem 0;
+        }
+        
+        .blog-posts {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 768px) {
+            .blog-posts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .blog-posts {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        .blog-post-card {
+            display: flex;
+            flex-direction: column;
+            border-radius: 0.5rem;
+            border: 1px solid var(--card-border);
+            background-color: var(--card);
+            overflow: hidden;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .blog-post-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+        
+        .post-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--muted) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+        
+        .post-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+            margin-bottom: 1rem;
+        }
+        
+        .post-category {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .post-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--foreground);
+        }
+        
+        .post-excerpt {
+            color: var(--muted-foreground);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+        
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .post-date {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="/" class="logo" data-testid="link-home">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                </div>
+                <span class="logo-text">LaptopFix</span>
+            </a>
+
+           <div class="nav-links desktop-nav">
+                <a href="../index.html" class="nav-link active" data-testid="link-nav-home">Home</a>
+                <a href="../page/guides.html" class="nav-link" data-testid="link-nav-troubleshooting">Troubleshooting</a>
+                <a href="../page/faq.html" class="nav-link" data-testid="link-nav-faq">FAQ</a>
+                <a href="../page/blog.html" class="nav-link" data-testid="link-nav-blog">Blog</a>
+                <a href="../page/contact.html" class="nav-link" data-testid="link-nav-contact">Contact</a>
+            </div>
+
+            <div class="nav-actions">
+                <div class="support-badge desktop-only">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <span>24/7 Support</span>
+                </div>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" data-testid="button-mobile-menu">
+                    <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+         <div class="mobile-nav" id="mobile-nav">
+                <a href="../index.html" class="nav-link active" data-testid="link-nav-home">Home</a>
+                <a href="../page/guides.html" class="nav-link" data-testid="link-nav-troubleshooting">Troubleshooting</a>
+                <a href="../page/faq.html" class="nav-link" data-testid="link-nav-faq">FAQ</a>
+                <a href="../page/blog.html" class="nav-link" data-testid="link-nav-blog">Blog</a>
+                <a href="../page/contact.html" class="nav-link" data-testid="link-nav-contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="blog-hero">
+        <div class="container">
+            <h1>Tech Tips & Insights</h1>
+            <p>Expert advice, maintenance tips, and the latest laptop technology insights to keep your device running smoothly.</p>
+        </div>
+    </section>
+
+    <!-- Blog Posts -->
+    <section class="blog-content">
+        <div class="container">
+            <div class="blog-posts">
+                <a href="#" class="blog-post-card">
+                    <div class="post-image">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">Performance</span>
+                            <span>•</span>
+                            <span>5 min read</span>
+                        </div>
+                        <h2 class="post-title">10 Ways to Speed Up Your Slow Laptop</h2>
+                        <p class="post-excerpt">
+                            Discover simple tweaks and optimizations that can dramatically improve your laptop's performance without spending a dime.
+                        </p>
+                        <div class="post-footer">
+                            <div class="post-author">
+                                <div class="avatar">JD</div>
+                                <span>John Doe</span>
+                            </div>
+                            <span class="post-date">Dec 15, 2024</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="blog-post-card">
+                    <div class="post-image">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="6" width="18" height="12" rx="2" ry="2"></rect>
+                            <line x1="23" y1="13" x2="23" y2="11"></line>
+                        </svg>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">Battery</span>
+                            <span>•</span>
+                            <span>8 min read</span>
+                        </div>
+                        <h2 class="post-title">Complete Battery Care Guide</h2>
+                        <p class="post-excerpt">
+                            Learn best practices for maintaining your laptop battery and extending its lifespan with proven techniques.
+                        </p>
+                        <div class="post-footer">
+                            <div class="post-author">
+                                <div class="avatar">SM</div>
+                                <span>Sarah Miller</span>
+                            </div>
+                            <span class="post-date">Dec 10, 2024</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="blog-post-card">
+                    <div class="post-image">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">Display</span>
+                            <span>•</span>
+                            <span>6 min read</span>
+                        </div>
+                        <h2 class="post-title">Fixing Common Screen Issues</h2>
+                        <p class="post-excerpt">
+                            Troubleshoot flickering, dead pixels, and other display problems with our comprehensive diagnostic guide.
+                        </p>
+                        <div class="post-footer">
+                            <div class="post-author">
+                                <div class="avatar">MC</div>
+                                <span>Mike Chen</span>
+                            </div>
+                            <span class="post-date">Dec 5, 2024</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="blog-post-card">
+                    <div class="post-image">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">Cooling</span>
+                            <span>•</span>
+                            <span>7 min read</span>
+                        </div>
+                        <h2 class="post-title">Laptop Overheating Prevention Tips</h2>
+                        <p class="post-excerpt">
+                            Keep your laptop cool and running efficiently with these proven cooling strategies and maintenance tips.
+                        </p>
+                        <div class="post-footer">
+                            <div class="post-author">
+                                <div class="avatar">LW</div>
+                                <span>Lisa Wang</span>
+                            </div>
+                            <span class="post-date">Dec 1, 2024</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="blog-post-card">
+                    <div class="post-image">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">Security</span>
+                            <span>•</span>
+                            <span>10 min read</span>
+                        </div>
+                        <h2 class="post-title">Essential Laptop Security Best Practices</h2>
+                        <p class="post-excerpt">
+                            Protect your laptop and data with these essential security measures every user should implement.
+                        </p>
+                        <div class="post-footer">
+                            <div class="post-author">
+                                <div class="avatar">RJ</div>
+                                <span>Robert Johnson</span>
+                            </div>
+                            <span class="post-date">Nov 28, 2024</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="blog-post-card">
+                    <div class="post-image">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-category">Maintenance</span>
+                            <span>•</span>
+                            <span>12 min read</span>
+                        </div>
+                        <h2 class="post-title">The Ultimate Laptop Maintenance Checklist</h2>
+                        <p class="post-excerpt">
+                            A comprehensive guide to keeping your laptop in top condition with monthly, quarterly, and yearly tasks.
+                        </p>
+                        <div class="post-footer">
+                            <div class="post-author">
+                                <div class="avatar">AK</div>
+                                <span>Anna Kim</span>
+                            </div>
+                            <span class="post-date">Nov 25, 2024</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+ <!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+
+                <p class="footer-description">
+                    Your trusted resource for laptop troubleshooting and repair solutions. Expert-verified guides helping 50,000+ users solve their tech problems.
+                </p>
+                <div class="footer-badges">
+                    <span class="badge-outline">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                        SSL Secured
+                    </span>
+                    <span class="badge-outline">Privacy Protected</span>
+                    <span class="badge-outline">Expert Verified</span>
+                </div>
+            </div> 
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; SLSU LUCENA.</p>
+            <div class="footer-contact">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <a href="mailto:techcare@gmail.com" data-testid="link-email-support">techcare@gmail.com</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="/script.js"></script>
+</body>
+</html>

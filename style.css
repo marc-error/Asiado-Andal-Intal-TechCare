@@ -208,19 +208,19 @@ h3 {
     background-color: var(--muted);
 }
 
-.dark .sun-icon {
-    display: none;
+.sun-icon {
+    display: block;
 }
 
 .moon-icon {
     display: none;
 }
 
-.dark .moon-icon {
-    display: block;
+.dark .sun-icon {
+    display: none;
 }
 
-.dark .sun-icon {
+.dark .moon-icon {
     display: block;
 }
 
@@ -291,7 +291,7 @@ h3 {
 .hero-background {
     position: absolute;
     inset: 0;
-    background-image: url('/attached_assets/generated_images/Professional_laptop_repair_workspace_54050b32.png');
+    background-image: url('../Asiado-Andal-Intal-TechCare/assets/front.jpg');
     background-size: cover;
     background-position: center;
 }
