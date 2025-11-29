@@ -208,19 +208,19 @@ h3 {
     background-color: var(--muted);
 }
 
-.dark .sun-icon {
-    display: none;
+.sun-icon {
+    display: block;
 }
 
 .moon-icon {
     display: none;
 }
 
-.dark .moon-icon {
-    display: block;
+.dark .sun-icon {
+    display: none;
 }
 
-.dark .sun-icon {
+.dark .moon-icon {
     display: block;
 }
 
@@ -291,7 +291,7 @@ h3 {
 .hero-background {
     position: absolute;
     inset: 0;
-    background-image: url('/attached_assets/generated_images/Professional_laptop_repair_workspace_54050b32.png');
+    background-image: url('../Asiado-Andal-Intal-TechCare/assets/front.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -1081,28 +1081,4 @@ section {
 
 .fade-in {
     animation: fadeIn 0.6s ease-out;
-}
-
-.faq-answer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-}
-
-.faq-item.active .faq-answer {
-    max-height: 500px; /* Adjust this as per your content */
-}
-
-.faq-question {
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.faq-item.active .faq-question {
-    color: var(--primary); /* Change color when opened */
-}
-
-/* Optional: For the icon rotation */
-.faq-icon {
-    transition: transform 0.3s ease;
 }
