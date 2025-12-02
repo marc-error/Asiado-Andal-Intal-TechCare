@@ -12,18 +12,20 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-    /* Card split into media (top) + content (bottom) vertically.
-       Responsive: remains single-column card on all viewports. */
+
+    
+    /* Card split into two columns: left = media, right = content.
+       Responsive: stacks to single column on small screens.
+       Divider between halves on wide viewports. */
     .guide-grid {
       display: grid;
       gap: 1rem;
       margin-bottom: 2rem;
-      grid-template-columns: 1fr; /* ensure the list of cards stacks vertically */
     }
 
     .blog-post-card {
       display: grid;
-      grid-template-columns: 1fr; /* vertical card: media on top, content below */
+      grid-template-columns: 360px 1fr; /* left column fixed (media), right column flexible */
       gap: 0;
       align-items: stretch;
       border-radius: 12px;
@@ -36,10 +38,10 @@
       color: inherit;
     }
 
-    /* Left/top side (media) */
+    /* Left side (media) */
     .post-image {
       width: 100%;
-      height: 260px; /* taller thumbnail for vertical layout */
+      height: 100%;
       min-height: 180px;
       display: block;
       background: #f3f3f3;
@@ -57,13 +59,13 @@
       transform: scale(1.03);
     }
 
-    /* Bottom side (content) */
+    /* Right side (content) */
     .post-content {
       padding: 1.25rem 1.5rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border-top: 1px solid var(--card-border, #e6e6e6); /* visual divider moved to top for vertical layout */
+      border-left: 1px solid var(--card-border, #e6e6e6); /* visual divider */
       background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
     }
 
@@ -81,15 +83,60 @@
       border-color: rgba(37,99,235,0.12);
     }
 
-    /* Small screens keep the same vertical card but adjust image height */
+    /* Responsive: on small screens stack media above content, remove divider */
     @media (max-width: 880px) {
+      .blog-post-card {
+        grid-template-columns: 1fr;
+      }
       .post-image {
-        height: 200px;
+        min-height: 200px;
       }
       .post-content {
+        border-left: none;
         padding: 1rem;
       }
     }
+
+    /* ===========================
+       Modal centering & behavior
+       Ensure the modal overlay centers the dialog horizontally and vertically.
+       Also add subtle animation and prevent background scrolling while open.
+       =========================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 1.25rem;
+      background: rgba(2,6,23,0.55);
+      backdrop-filter: blur(6px);
+    }
+    /* When aria-hidden is false, show overlay as a flex container and center children */
+    .modal-overlay[aria-hidden="false"] {
+      display: flex;
+    }
+    .modal {
+      width: min(900px, 100%);
+      max-height: 90vh;
+      overflow: auto;
+      border-radius: 12px;
+      background: var(--card, #fff);
+      box-shadow: 0 18px 50px rgba(2,6,23,0.5);
+      border: 1px solid var(--card-border, rgba(0,0,0,0.08));
+      padding: 1rem;
+      position: relative;
+      transform-origin: center;
+      animation: modalPop .16s ease;
+    }
+    @keyframes modalPop {
+      from { transform: translateY(-6px) scale(.995); opacity: 0; }
+      to   { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    /* Ensure focus outline is visible */
+    .modal:focus { outline: none; box-shadow: 0 0 0 4px rgba(37,99,235,0.08); }
+
   </style>
 </head>
 <body>
@@ -428,6 +475,147 @@
       </div>
     </div>
   </footer>
-  <script src="script.js"></script>
+
+  <script>
+    // Minimal modal script (works with modal-trigger cards & "open-modal" buttons)
+    (function(){
+      const overlay = document.getElementById('modal-overlay');
+      const modal = overlay && overlay.querySelector('.modal');
+      const titleEl = document.getElementById('modal-title');
+      const catEl = document.getElementById('modal-category');
+      const descEl = document.getElementById('modal-desc');
+      const mediaEl = document.getElementById('modal-media');
+      const linkEl = document.getElementById('modal-link');
+
+      // Save previously focused element to restore focus on close
+      let previousActiveElement = null;
+
+      function openModal(data) {
+        previousActiveElement = document.activeElement;
+        titleEl.textContent = data.title || '';
+        catEl.textContent = data.category || '';
+        descEl.textContent = data.desc || '';
+        linkEl.href = data.video || '#';
+
+        // inject iframe (YouTube) if video present
+        mediaEl.innerHTML = '';
+        if (data.video && data.video.includes('youtube')) {
+          try {
+            const url = new URL(data.video);
+            const vid = url.searchParams.get('v') || (data.video.split('/').pop());
+            const iframe = document.createElement('iframe');
+            iframe.width = '100%';
+            iframe.height = '360';
+            iframe.src = 'https://www.youtube.com/embed/' + vid + '?autoplay=1';
+            iframe.title = data.title || 'Video';
+            iframe.frameBorder = '0';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.allowFullscreen = true;
+            mediaEl.appendChild(iframe);
+          } catch (e) {
+            const a = document.createElement('a');
+            a.href = data.video;
+            a.textContent = 'Open media';
+            a.target = '_blank';
+            mediaEl.appendChild(a);
+          }
+        } else if (data.video) {
+          const a = document.createElement('a');
+          a.href = data.video;
+          a.textContent = 'Open media';
+          a.target = '_blank';
+          mediaEl.appendChild(a);
+        }
+
+        // show overlay and center modal via CSS
+        overlay.style.display = 'flex';
+        overlay.setAttribute('aria-hidden','false');
+
+        // prevent background scroll
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+
+        // focus the modal for keyboard users
+        modal.setAttribute('tabindex','-1');
+        modal.focus();
+      }
+
+      function closeModal() {
+        overlay.style.display = 'none';
+        overlay.setAttribute('aria-hidden','true');
+        mediaEl.innerHTML = '';
+
+        // restore scrolling
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+
+        // restore focus to previously focused element
+        if (previousActiveElement && typeof previousActiveElement.focus === 'function') {
+          previousActiveElement.focus();
+        }
+      }
+
+      // attach handlers to card clicks and quick view buttons
+      document.querySelectorAll('.modal-trigger').forEach(card => {
+        card.addEventListener('click', (ev) => {
+          // ignore clicks on links inside card
+          if (ev.target.closest('a')) return;
+          const data = {
+            category: card.dataset.category,
+            title: card.dataset.title,
+            desc: card.dataset.desc,
+            video: card.dataset.video
+          };
+          openModal(data);
+        });
+      });
+
+      document.querySelectorAll('.open-modal').forEach(btn => {
+        btn.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          const card = ev.target.closest('.blog-post-card');
+          if (!card) return;
+          const data = {
+            category: card.dataset.category,
+            title: card.dataset.title,
+            desc: card.dataset.desc,
+            video: card.dataset.video
+          };
+          openModal(data);
+        });
+      });
+
+      // close buttons and overlay click
+      overlay.addEventListener('click', (ev) => {
+        if (ev.target === overlay) closeModal();
+      });
+      overlay.querySelectorAll('.modal-close').forEach(b => b.addEventListener('click', closeModal));
+
+      // keyboard: ESC to close, trap focus inside modal while open
+      document.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Escape' && overlay.style.display === 'flex') {
+          closeModal();
+        }
+        // simple focus trap: if modal is open and Tab is pressed, keep focus inside modal
+        if (ev.key === 'Tab' && overlay.style.display === 'flex') {
+          const focusable = modal.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, iframe, [tabindex]:not([tabindex="-1"])');
+          if (!focusable.length) return;
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (ev.shiftKey) { // shift + tab
+            if (document.activeElement === first) {
+              ev.preventDefault();
+              last.focus();
+            }
+          } else { // tab
+            if (document.activeElement === last) {
+              ev.preventDefault();
+              first.focus();
+            }
+          }
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
