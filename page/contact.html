@@ -249,20 +249,20 @@
                 <!-- Contact Form -->
                 <div class="contact-form">
                     <h2 style="margin-bottom: 1.5rem;">Send Us a Message</h2>
-                    <form id="contact-form">
+                   <form action="contact_db.php" method="POST" id="contact-form">
                         <div class="form-group">
                             <label for="name" class="form-label">Name *</label>
-                            <input type="text" id="name" class="form-input" placeholder="Your name" required data-testid="input-name">
+                            <input type="text" name="name" id="name" class="form-input" placeholder="Your name" required data-testid="input-name">
                         </div>
                         
                         <div class="form-group">
                             <label for="email" class="form-label">Email *</label>
-                            <input type="email" id="email" class="form-input" placeholder="your@email.com" required data-testid="input-email">
+                            <input type="email" name="email" id="email" class="form-input" placeholder="your@email.com" required data-testid="input-email">
                         </div>
                         
                         <div class="form-group">
                             <label for="category" class="form-label">Category *</label>
-                            <select id="category" class="form-select" required data-testid="select-category">
+                            <select id="category" name="category" class="form-select" required data-testid="select-category">
                                 <option value="">Select a category</option>
                                 <option value="battery">Battery Issues</option>
                                 <option value="performance">Performance Problems</option>
@@ -276,7 +276,7 @@
                         
                         <div class="form-group">
                             <label for="priority" class="form-label">Priority *</label>
-                            <select id="priority" class="form-select" required data-testid="select-priority">
+                            <select id="priority" name="priority" class="form-select" required data-testid="select-priority">
                                 <option value="low">Low - General inquiry</option>
                                 <option value="medium">Medium - Issue within 24 hours</option>
                                 <option value="high">High - Urgent problem</option>
@@ -285,10 +285,10 @@
                         
                         <div class="form-group">
                             <label for="message" class="form-label">Message *</label>
-                            <textarea id="message" class="form-textarea" placeholder="Describe your issue or question..." required data-testid="textarea-message"></textarea>
+                            <textarea id="message" name="message" class="form-textarea" placeholder="Describe your issue or question..." required data-testid="textarea-message"></textarea>
                         </div>
                         
-                        <button type="submit" class="form-submit" data-testid="button-submit">Send Message</button>
+                        <input type="submit" class="form-submit" data-testid="button-submit">Send Message</input>
                     </form>
                 </div>
 
@@ -345,7 +345,7 @@
                     <div class="info-card">
                         <h3>Quick Links</h3>
                         <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <a href="../page/faq.html" style="color: var(--primary); text-decoration: none; font-size: 0.875rem;">Browse FAQ →</a>
+                            <a href="faq.html" style="color: var(--primary); text-decoration: none; font-size: 0.875rem;">Browse FAQ →</a>
                             <a href="../page/guides.html" style="color: var(--primary); text-decoration: none; font-size: 0.875rem;">View Troubleshooting Guides →</a>
                             <a href="../page/blog.html" style="color: var(--primary); text-decoration: none; font-size: 0.875rem;">Read Our Blog →</a>
                         </div>
