@@ -1,115 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content="Find answers to common laptop problems. Searchable FAQ with expert solutions for battery, performance, display, and more.">
     <title>FAQ - Frequently Asked Questions | LaptopFix</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
     <style>
-        .faq-hero {
-            padding: 6rem 0 4rem;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--background) 100%);
-            text-align: center;
-        }
-        
-        .faq-hero h1 {
-            margin-bottom: 1rem;
-        }
-        
-        .faq-hero p {
-            font-size: 1.25rem;
-            color: var(--muted-foreground);
-            max-width: 42rem;
-            margin: 0 auto 2rem;
-        }
-        
-        .faq-search {
-            max-width: 42rem;
-            margin: 0 auto;
-            position: relative;
-        }
-        
-        .faq-search svg {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--muted-foreground);
-        }
-        
-        .faq-search input {
-            width: 100%;
-            height: 3.5rem;
-            padding-left: 3rem;
-            border-radius: 0.5rem;
-            border: 1px solid var(--border);
-            background-color: var(--card);
-            font-size: 1rem;
-            color: var(--foreground);
-        }
-        
-        .faq-content {
-            padding: 4rem 0;
-        }
-        
-        .faq-list {
-            max-width: 56rem;
-            margin: 0 auto;
-        }
-        
-        .faq-item {
-            margin-bottom: 1rem;
-            border-radius: 0.5rem;
-            border: 1px solid var(--card-border);
-            background-color: var(--card);
-            overflow: hidden;
-        }
-        
-        .faq-question {
-            padding: 1.5rem;
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--foreground);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            transition: background-color 0.2s;
-        }
-        
-        .faq-question:hover {
-            background-color: var(--muted);
-        }
-        
-        .faq-question svg {
-            flex-shrink: 0;
-            transition: transform 0.3s;
-        }
-        
-        .faq-item.active .faq-question svg {
-            transform: rotate(180deg);
-        }
-        
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        
-        .faq-answer-content {
-            padding: 0 1.5rem 1.5rem;
-            color: var(--muted-foreground);
-            line-height: 1.6;
-        }
+      /* FAQ-specific styles updated to use the site's shared CSS variables so .dark toggling works */
+      *{box-sizing:border-box}
+      body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--background); color:var(--foreground); margin:0; -webkit-font-smoothing:antialiased;}
+      .container{max-width:1150px; margin:0 auto; padding:0 1rem;} /* kept the original narrower container for this page */
+
+      /* HERO */
+      .faq-hero {
+        padding:5.2rem 0 3.2rem;
+        background: linear-gradient(135deg, rgba(37,99,235,0.06) 0%, transparent 100%);
+        text-align:center;
+      }
+      .faq-hero h1 { margin:0 0 .6rem; font-size:2.1rem; line-height:1.05; }
+      .faq-hero p { margin:0 auto 1.4rem; color:var(--muted-foreground); max-width:68ch; font-size:1.03rem; }
+
+      .faq-search { max-width:820px; margin:0 auto; position:relative; }
+      .faq-search svg { position:absolute; left:1rem; top:50%; transform:translateY(-50%); color:var(--muted-foreground); }
+      .faq-search input {
+        width:100%;
+        height:52px;
+        padding:0 1rem 0 3.6rem;
+        border-radius:12px;
+        border:1px solid var(--card-border);
+        background:var(--card);
+        box-shadow:var(--shadow-sm);
+        font-size:1rem;
+        color:var(--foreground);
+        outline:none;
+      }
+      .faq-search input::placeholder { color:var(--muted-foreground); }
+
+      /* LAYOUT */
+      .faq-content { padding:3.25rem 0 5rem; }
+      .faq-grid { display:grid; grid-template-columns: 1fr; gap:1.25rem; align-items:start; }
+      @media(min-width:980px){ .faq-grid { grid-template-columns: 1fr 380px; gap:1.5rem; } }
+
+      /* FAQ LIST */
+      .faq-list { display:flex; flex-direction:column; gap:1rem; }
+      .faq-item {
+        background:var(--card);
+        border:1px solid var(--card-border);
+        border-radius:12px;
+        overflow:hidden;
+        box-shadow:var(--shadow-sm);
+        transition:transform .16s ease, box-shadow .16s ease;
+      }
+      .faq-item:hover{ transform:translateY(-4px); box-shadow: 0 14px 34px rgba(15,23,42,0.08); }
+
+      .faq-question {
+        padding:1.25rem 1.25rem;
+        display:flex;
+        gap:1rem;
+        align-items:flex-start;
+        cursor:pointer;
+        user-select:none;
+        background:transparent;
+      }
+      .faq-question .q-main { flex:1; }
+      .q-text { font-weight:700; font-size:1.05rem; color:var(--foreground); margin-bottom:.18rem; }
+      .q-meta { color:var(--muted-foreground); font-size:.88rem; }
+      .faq-question svg { flex-shrink:0; margin-left:auto; color:var(--muted-foreground); transition: transform .22s ease; }
+
+      .faq-tags { margin-top:.5rem; display:flex; gap:.5rem; flex-wrap:wrap; }
+      .faq-tag { background:rgba(15,23,42,0.03); color:var(--muted-foreground); padding:.18rem .5rem; border-radius:8px; font-size:.82rem; }
+
+      .faq-item.active .faq-question svg { transform: rotate(180deg); color:var(--primary); }
+      .faq-item.active { border-color: rgba(37,99,235,0.12); }
+
+      /* ANSWER - allow much larger expansion and use adaptive gradient instead of a fixed white one */
+      .faq-answer {
+        /* force CSS control over height so it won't be clipped when JS sets inline maxHeight */
+        max-height: 0 !important;
+        overflow: hidden;
+        transition: max-height .36s ease, padding .2s ease;
+        padding: 0 1.25rem;
+        border-top: 1px solid var(--card-border);
+        /* subtle overlay that adapts for light/dark via override below */
+        background: linear-gradient(180deg, transparent, rgba(0,0,0,0.03));
+      }
+      /* make the overlay lighter in dark mode */
+      .dark .faq-answer {
+        background: linear-gradient(180deg, transparent, rgba(255,255,255,0.02));
+      }
+      /* make active state expand fully (big enough for long answers) and set padding */
+      .faq-item.active .faq-answer {
+        max-height: 2000px !important;
+        padding: 1rem 1.25rem 1.25rem;
+      }
+
+      .faq-answer-content { color:var(--muted-foreground); font-size:1rem; line-height:1.6; }
+      .faq-answer-content p { margin:.45rem 0; }
+      .faq-answer-content ul { margin:.4rem 0 0 1.2rem; }
+      .faq-answer-content ol { margin:.4rem 0 0 1.2rem; }
+      .faq-answer-content code { background:rgba(15,23,42,0.04); padding:.08rem .28rem; border-radius:4px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-size:.95rem; }
+
+      .answer-footer { margin-top:.9rem; display:flex; gap:.8rem; align-items:center; flex-wrap:wrap; }
+      .badge { background: #eef6ff; color:var(--primary); padding:.28rem .6rem; border-radius:999px; font-weight:700; font-size:.85rem; }
+
+      /* SIDEBAR */
+      .faq-side { display:flex; flex-direction:column; gap:1rem; position:sticky; top:92px; }
+      .card { background:var(--card); border:1px solid var(--card-border); padding:1rem; border-radius:10px; box-shadow:var(--shadow-sm); }
+      .card h4 { margin:0 0 .6rem; font-size:1rem; }
+      .contact-list a { color:var(--primary); font-weight:600; text-decoration:none; }
+
+      .no-results { padding:1.5rem; text-align:center; background:var(--card); border:1px solid var(--card-border); border-radius:10px; color:var(--muted-foreground); box-shadow:var(--shadow-sm); }
+
+      @media(max-width:540px){
+        .faq-search input{ height:48px; padding-left:3.2rem; }
+        .faq-question { padding:1rem; }
+        .faq-side { position:static; top:auto; }
+      }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Navigation (left unchanged per request) -->
     <nav class="navbar">
         <div class="container navbar-content">
             <a href="/" class="logo" data-testid="link-home">
@@ -138,7 +154,7 @@
                     </svg>
                     <span>24/7 Support</span>
                 </div>
-                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                 <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
                     <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="5"></circle>
                         <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -155,16 +171,13 @@
                     </svg>
                 </button>
                 <button class="mobile-menu-toggle" id="mobile-menu-toggle" data-testid="button-mobile-menu">
-                    <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
                         <line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
-                    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
                 </button>
+                
             </div>
         </div>
 
@@ -178,170 +191,579 @@
     </nav>
 
     <!-- Hero -->
-    <section class="faq-hero">
+    <section class="faq-hero" aria-labelledby="faq-heading">
         <div class="container">
-            <h1>Frequently Asked Questions</h1>
-            <p>Find quick answers to common laptop problems. Search or browse by topic.</p>
-            <div class="faq-search">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                </svg>
-                <input type="search" placeholder="Search for answers..." data-testid="input-faq-search">
-            </div>
+            <h1 id="faq-heading">Frequently Asked Questions</h1>
+            <p>Find quick answers to common laptop problems. Search or browse by topic — each answer includes practical steps and guidance.</p>
+
         </div>
     </section>
 
     <!-- FAQ Content -->
-    <section class="faq-content">
+      <section class="faq-content" aria-labelledby="faq-section">
         <div class="container">
-            
-            <div class="faq-list">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Why is my laptop battery draining so fast?</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            Fast battery drain can be caused by several factors: high screen brightness, background apps consuming power, outdated drivers, or an aging battery. Start by checking your power settings, reducing screen brightness, and closing unnecessary programs. Run a battery health check in Windows settings to see if your battery needs replacement.
+            <div class="faq-grid">
+                <div class="faq-list" id="faq-list" aria-live="polite">
+
+                    <!-- Item 1 -->
+                    <div class="faq-item" data-keywords="battery drain power settings background apps age capacity">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">Why is my laptop battery draining so fast?</div>
+                                <div class="q-meta">Common causes & quick checks</div>
+                                <div class="faq-tags" aria-hidden="true">
+                                    <span class="faq-tag">Difficulty: Easy</span>
+                                    <span class="faq-tag">Time: 10–25 min</span>
+                                </div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <p>Rapid battery drain usually stems from software or hardware issues. Start with these prioritized checks:</p>
+                                <ul>
+                                    <li><strong>Power & display:</strong> reduce screen brightness, set sleep timeout, and enable power-saving modes.</li>
+                                    <li><strong>Background apps:</strong> check Task Manager / Activity Monitor for processes using CPU, disk or energy — close or uninstall heavy offenders.</li>
+                                    <li><strong>Peripherals & radios:</strong> unplug USB devices, disable unused Bluetooth/Wi‑Fi radios when not required.</li>
+                                    <li><strong>System updates:</strong> update OS, BIOS/EC, power management and chipset drivers — vendors sometimes fix power bugs.</li>
+                                    <li><strong>Battery health:</strong> generate a battery report (<code>powercfg /batteryreport</code> on Windows) and review full-charge vs design capacity and cycle count.</li>
+                                </ul>
+                                <p><strong>When to replace:</strong> consider a new battery if full-charge capacity is consistently below ~80% of design or if the device dies unexpectedly on battery. Use OEM or reputable replacements.</p>
+                                <div class="answer-footer">
+                                    <span class="badge">Quick tip</span>
+                                    <div class="muted-small">Test in a clean boot or safe mode to rule out 3rd-party apps.</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Item 2 -->
+                    <div class="faq-item" data-keywords="won't turn on power adapter reset ram bios led beep">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">How do I fix a laptop that won't turn on?</div>
+                                <div class="q-meta">Diagnostics to try before repair</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Medium</span><span class="faq-tag">Time: 15–60 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ol>
+                                    <li><strong>Check power source:</strong> test the wall outlet, try a different charger, and inspect the adapter for damage or a faint LED.</li>
+                                    <li><strong>Hard reset:</strong> disconnect power, remove removable battery (if present), hold power button 30s, reconnect and retry.</li>
+                                    <li><strong>Minimal boot:</strong> disconnect all peripherals, try powering with only essential parts (one RAM stick if applicable).</li>
+                                    <li><strong>External display:</strong> attach an external monitor to rule out display failure.</li>
+                                    <li><strong>Indicators:</strong> note LED blink/beep patterns and consult vendor docs for error codes.</li>
+                                </ol>
+                                <p><strong>Safety:</strong> if you detect burning smell, visible damage, or the device still shows no signs of life (no LEDs), stop and get professional help — PSU or motherboard faults can be dangerous.</p>
+                                <div class="answer-footer">
+                                    <span class="badge">Safety</span>
+                                    <div class="muted-small">Avoid probing power circuitry unless you have ESD training and the right tools.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="faq-item" data-keywords="overheating fan thermal paste cleaning vents cooling pad thermal">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">What causes laptop overheating and how do I prevent it?</div>
+                                <div class="q-meta">Airflow, maintenance, and monitoring</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy → Advanced</span><span class="faq-tag">Time: 10–120 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <p>Overheating is commonly caused by dust-clogged vents, failing fans, poor thermal interface, or sustained heavy workloads.</p>
+                                <ul>
+                                    <li><strong>Immediate:</strong> stop heavy tasks, move to a cool surface, let the laptop cool down.</li>
+                                    <li><strong>External cleaning:</strong> use short bursts of compressed air on vents; avoid spinning fans faster than they spin normally.</li>
+                                    <li><strong>Software control:</strong> reduce power profiles, cap CPU max state, use vendor fan utilities to increase cooling when needed.</li>
+                                    <li><strong>Service-level:</strong> if temps remain high, reapply quality thermal paste and replace failing fans or thermal pads (requires disassembly).</li>
+                                </ul>
+                                <p><strong>Monitor:</strong> use tools like HWInfo (Windows) or Intel Power Gadget (macOS) to log temperatures. If idle temps >60°C or peak >95°C under light workloads, seek service.</p>
+                                <div class="answer-footer">
+                                    <span class="badge">Monitor</span>
+                                    <div class="muted-small">Capture a short log while reproducing the issue to share with a technician.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="faq-item" data-keywords="slow performance ssd ram malware startup disk">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">Why is my laptop running so slow?</div>
+                                <div class="q-meta">Performance troubleshooting & upgrades</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy → Medium</span><span class="faq-tag">Time: 10–90 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ol>
+                                    <li><strong>Resource check:</strong> open Task Manager/Activity Monitor and sort by CPU, Memory, Disk to find culprits.</li>
+                                    <li><strong>Malware & cleanup:</strong> run a full antivirus scan, remove bloatware, and clear temporary files.</li>
+                                    <li><strong>Storage:</strong> HDD → SSD upgrade yields the biggest user-visible improvement.</li>
+                                    <li><strong>RAM & drivers:</strong> add RAM if memory is saturated; update chipset/graphics drivers.</li>
+                                    <li><strong>Thermals:</strong> ensure cooling is adequate to avoid thermal throttling.</li>
+                                </ol>
+                                <p><strong>If still slow:</strong> test with a fresh user account or consider a clean OS reinstall after backing up data.</p>
+                                <div class="answer-footer">
+                                    <span class="badge">Tip</span>
+                                    <div class="muted-small">Measure boot time and app launch before/after changes to quantify improvement.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="faq-item" data-keywords="screen flicker driver refresh-rate cable panel">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">How do I fix a laptop screen that's flickering?</div>
+                                <div class="q-meta">Driver, settings, and hardware checks</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy → Advanced</span><span class="faq-tag">Time: 10–60 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ul>
+                                    <li>Update display drivers from Intel/NVIDIA/AMD and install any firmware updates.</li>
+                                    <li>Check and adjust refresh rate/resolution in Display settings—use recommended values.</li>
+                                    <li>Boot into safe mode: if flicker stops, it's likely software/driver related.</li>
+                                    <li>If flicker persists, test with an external monitor; if external is fine, suspect panel/cable — professional repair required.</li>
+                                </ul>
+                                <div class="answer-footer">
+                                    <span class="badge">Check</span>
+                                    <div class="muted-small">Recording a short video of the flicker helps technicians pinpoint the issue.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 6 -->
+                    <div class="faq-item" data-keywords="keyboard not working keys device manager drivers liquid">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">My laptop keyboard isn't working. What should I do?</div>
+                                <div class="q-meta">Troubleshooting steps</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy → Medium</span><span class="faq-tag">Time: 5–45 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ul>
+                                    <li>Restart and test in BIOS/login screen; if keys work there it's likely a driver or OS issue.</li>
+                                    <li>Update or reinstall keyboard drivers via Device Manager (Windows).</li>
+                                    <li>Try an external USB keyboard to confirm whether the built-in keyboard is faulty.</li>
+                                    <li>If sticky keys or liquid damage, power off immediately and arrange professional cleaning/repair to prevent corrosion.</li>
+                                </ul>
+                                <div class="answer-footer">
+                                    <span class="badge">Note</span>
+                                    <div class="muted-small">If liquid was spilled, avoid powering on — corrosion spreads if powered.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 7 -->
+                    <div class="faq-item" data-keywords="cleaning maintenance vents fans internal compressed-air">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">How often should I clean my laptop?</div>
+                                <div class="q-meta">Routine maintenance schedule</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy → Advanced</span><span class="faq-tag">Time: 5–60 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <p>Recommended cleaning cadence:</p>
+                                <ul>
+                                    <li><strong>Weekly:</strong> wipe the chassis and keys with a microfiber cloth; keep liquids away.</li>
+                                    <li><strong>Every 3–6 months:</strong> use compressed air on vents (external cleaning).</li>
+                                    <li><strong>Every 6–12 months:</strong> internal cleaning (open chassis) for heavy-use or dusty environments — have a technician if unsure.</li>
+                                </ul>
+                                <p>Always power off, unplug, and remove battery (if removable) before cleaning. Use ESD precautions when opening the case.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 8 -->
+                    <div class="faq-item" data-keywords="upgrade ram storage ssd hdd compatibility soldered m2">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">Can I upgrade my laptop's RAM and storage?</div>
+                                <div class="q-meta">Compatibility checks & recommendations</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy → Medium</span><span class="faq-tag">Time: 15–60 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <p>Most laptops support storage upgrades and many support RAM upgrades — check these first:</p>
+                                <ul>
+                                    <li>Consult the service manual or vendor support page for supported RAM types and max capacity.</li>
+                                    <li>Use vendor tools (Crucial/Kingston) to detect compatible upgrades and whether RAM is soldered.</li>
+                                    <li>Confirm storage form factor: 2.5" SATA, M.2 SATA, or M.2 NVMe and available connectors.</li>
+                                </ul>
+                                <p><strong>Recommendation:</strong> upgrading to an NVMe SSD typically provides the most noticeable speed improvement. If unsure, share your model and we can recommend parts.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 9 -->
+                    <div class="faq-item" data-keywords="battery not charging charger led battery status charging threshold">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">My laptop shows it's plugged in but the battery isn't charging — what's wrong?</div>
+                                <div class="q-meta">Common charging issues & checks</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy</span><span class="faq-tag">Time: 5–30 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ul>
+                                    <li>Check the charger and cable for damage and try another known-good charger if possible.</li>
+                                    <li>Inspect the DC jack on the laptop for wobble or debris; loose jacks can fail to deliver current.</li>
+                                    <li>Some systems have charging thresholds in firmware or vendor utilities — check BIOS/UEFI and vendor power settings.</li>
+                                    <li>Test battery health: poor cells may accept a trickle but not full charge — replace if full-charge capacity is low.</li>
+                                </ul>
+                                <div class="answer-footer">
+                                    <span class="badge">Quick</span>
+                                    <div class="muted-small">If the charger LED is off but the wall socket works, stop using the charger and replace it.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 10 -->
+                    <div class="faq-item" data-keywords="wifi disconnects internet drops router signal drivers network adapter">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">Why does my Wi‑Fi keep disconnecting?</div>
+                                <div class="q-meta">Network troubleshooting steps</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy → Medium</span><span class="faq-tag">Time: 10–30 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ol>
+                                    <li>Reboot router/modem and laptop, and test with other devices to rule out ISP/router issues.</li>
+                                    <li>Update Wi‑Fi adapter drivers and check vendor forums for known chipset issues.</li>
+                                    <li>Change router channel or move closer to the AP; interference (microwaves, neighboring networks) can cause drops.</li>
+                                    <li>Disable power-saving for the Wi‑Fi adapter in Windows Device Manager or vendor utility.</li>
+                                </ol>
+                                <div class="answer-footer">
+                                    <span class="badge">Tip</span>
+                                    <div class="muted-small">If drops coincide with sleep/resume, look at power settings and USB/wireless suspend options.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 11 -->
+                    <div class="faq-item" data-keywords="blue screen bsod stop error crash dump drivers memory disk">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">What should I do when Windows shows a blue screen (BSOD)?</div>
+                                <div class="q-meta">Interpreting stop codes and initial steps</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Medium</span><span class="faq-tag">Time: 15–90 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ol>
+                                    <li>Note the stop code shown on screen, then search vendor/microsoft docs for that code.</li>
+                                    <li>Boot into Safe Mode — if stable there, suspect driver or 3rd-party software.</li>
+                                    <li>Run memory tests (memtest86) and check SMART for storage errors; hardware faults often cause intermittent BSODs.</li>
+                                    <li>Use Windows Event Viewer and dump analyzers (WhoCrashed, WinDbg) for deeper debugging.</li>
+                                </ol>
+                                <div class="answer-footer">
+                                    <span class="badge">Safety</span>
+                                    <div class="muted-small">If crashes are frequent after hardware changes, revert changes and test components individually.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 12 -->
+                    <div class="faq-item" data-keywords="ssd hdd clicking noise slow read write bad sectors trim SMART">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">My drive is making noise or files are corrupting — is my SSD/HDD failing?</div>
+                                <div class="q-meta">Signs of drive failure & immediate actions</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Medium</span><span class="faq-tag">Time: 10–60 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ul>
+                                    <li>For HDD: repeated clicking, grinding, or slow response suggests mechanical failure — back up immediately.</li>
+                                    <li>For SSD: SMART warnings, sudden file corruption, or disappearing capacity can indicate impending failure — back up and run vendor diagnostics.</li>
+                                    <li>Use SMART tools (CrystalDiskInfo, vendor utilities) to read health and reallocate sector counts.</li>
+                                    <li>If you detect failure symptoms, clone or image the drive for recovery and replace it ASAP.</li>
+                                </ul>
+                                <div class="answer-footer">
+                                    <span class="badge">Warning</span>
+                                    <div class="muted-small">Do not continue heavy writes on a failing drive — it accelerates data loss.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 13 -->
+                    <div class="faq-item" data-keywords="camera webcam mic not detected privacy drivers device manager permissions">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">My webcam or microphone isn't detected — how can I fix it?</div>
+                                <div class="q-meta">Permissions, drivers & hardware checks</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy</span><span class="faq-tag">Time: 5–30 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ol>
+                                    <li>Check OS privacy permissions (Windows: Settings → Privacy → Camera/Microphone) and ensure apps are allowed.</li>
+                                    <li>Open Device Manager to see if the device is present or flagged with an error; reinstall drivers if necessary.</li>
+                                    <li>Test with another app or an online webcam tester; if the built-in camera fails but a USB webcam works, suspect hardware.</li>
+                                    <li>For intermittent failures, reseat internal connectors (service manual) or contact a technician for hardware inspection.</li>
+                                </ol>
+                                <div class="answer-footer">
+                                    <span class="badge">Note</span>
+                                    <div class="muted-small">Some BIOS/UEFI have camera privacy toggles — check and re-enable if disabled.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NEW Item 14 -->
+                    <div class="faq-item" data-keywords="bios reset restore defaults CMOS password update firmware UEFI reset">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">How do I reset BIOS/UEFI to defaults safely?</div>
+                                <div class="q-meta">When and how to restore BIOS settings</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Medium</span><span class="faq-tag">Time: 5–15 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ol>
+                                    <li>Enter BIOS/UEFI during boot (common keys: F2, Del, Esc) and look for "Load Defaults" or "Restore Optimized Defaults".</li>
+                                    <li>If you changed CPU/ram/RAID settings, note them before resetting — you'll need to reapply vendor-specific options.</li>
+                                    <li>If you cannot boot after changes, clear CMOS by removing the coin cell or using the motherboard jumper (consult service manual).</li>
+                                    <li>Update BIOS only if a vendor-recommended fix exists; follow vendor instructions exactly to avoid bricking the device.</li>
+                                </ol>
+                                <div class="answer-footer">
+                                    <span class="badge">Caution</span>
+                                    <div class="muted-small">Clearing CMOS resets settings but won't delete data on your drive. If unsure, capture current BIOS screenshots first.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NEW Item 15 -->
+                    <div class="faq-item" data-keywords="startup programs boot slow autorun disable startup apps msconfig task manager performance">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">How can I disable unnecessary startup programs to speed up boot?</div>
+                                <div class="q-meta">Windows/macOS startup optimization</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy</span><span class="faq-tag">Time: 5–20 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ul>
+                                    <li>Windows: open Task Manager → Startup tab, sort by Impact, and disable non-essential entries.</li>
+                                    <li>macOS: System Settings → General → Login Items (or Users & Groups → Login Items on older macOS) and remove unneeded items.</li>
+                                    <li>Be careful with vendor utilities (battery/fan controllers); keep those you rely on for hardware features.</li>
+                                </ul>
+                                <div class="answer-footer">
+                                    <span class="badge">Tip</span>
+                                    <div class="muted-small">Disable first, reboot, and verify functionality before removing or uninstalling the app.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NEW Item 16 -->
+                    <div class="faq-item" data-keywords="touchpad not working gestures settings drivers synaptics elantech palm">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">Touchpad not responding or gestures broken — what should I check?</div>
+                                <div class="q-meta">Driver, settings & hardware checks</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy → Medium</span><span class="faq-tag">Time: 5–30 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ol>
+                                    <li>Check OS settings: ensure the touchpad is enabled and gestures are turned on (Windows: Settings → Bluetooth & devices → Touchpad).</li>
+                                    <li>Update or reinstall touchpad drivers (Synaptics/ELAN) from vendor support; use generic drivers only as a last resort.</li>
+                                    <li>Disable an external mouse to verify the internal touchpad isn't being suppressed.</li>
+                                    <li>If intermittent, test in BIOS or with a USB live OS to rule out software issues; if it fails on all, the cable or board may need service.</li>
+                                </ol>
+                                <div class="answer-footer">
+                                    <span class="badge">Note</span>
+                                    <div class="muted-small">Some laptops have a function key that toggles the touchpad — check your keyboard legends.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NEW Item 17 -->
+                    <div class="faq-item" data-keywords="headphone jack not detecting earbuds no sound detect audio jack port cleaning driver">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">Headphones plugged in but no sound / jack not detecting — how to fix?</div>
+                                <div class="q-meta">Audio jack, drivers & hardware tips</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy → Medium</span><span class="faq-tag">Time: 5–30 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ul>
+                                    <li>Try different headphones to rule out a broken plug or cable.</li>
+                                    <li>Check OS audio output selection (Windows: sound tray → select correct output). Some systems switch to HDMI or Bluetooth.</li>
+                                    <li>Inspect and gently clean the jack with compressed air — lint can prevent detection.</li>
+                                    <li>If the jack is loose or intermittent, professional repair is recommended; some models have modular audio boards.</li>
+                                </ul>
+                                <div class="answer-footer">
+                                    <span class="badge">Quick</span>
+                                    <div class="muted-small">If sound works via USB/BT headset, use that as a temporary workaround while repairing the jack.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NEW Item 18 -->
+                    <div class="faq-item" data-keywords="fan loud noise spin high RPM fan curve BIOS fan control dust bearings">
+                        <div class="faq-question" role="button" aria-expanded="false" tabindex="0">
+                            <div class="q-main">
+                                <div class="q-text">How can I reduce excessive fan noise?</div>
+                                <div class="q-meta">Fan control, cleaning & thermal solutions</div>
+                                <div class="faq-tags"><span class="faq-tag">Difficulty: Easy → Advanced</span><span class="faq-tag">Time: 10–60 min</span></div>
+                            </div>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer" aria-hidden="true">
+                            <div class="faq-answer-content">
+                                <ol>
+                                    <li>Clean vents and fan intakes using short bursts of compressed air; accumulated dust is the most common cause.</li>
+                                    <li>Use vendor fan-control utilities or set a quieter fan curve in BIOS if available.</li>
+                                    <li>Check for background processes causing sustained high CPU/GPU load and address them.</li>
+                                    <li>If fan bearings are failing (grinding noise) or RPM stays high despite low load, replace the fan.</li>
+                                </ol>
+                                <div class="answer-footer">
+                                    <span class="badge">Tip</span>
+                                    <div class="muted-small">For quieter operation, use a cooling pad and avoid blocking vents while on soft surfaces.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="no-results" class="no-results" style="display:none">No results found. Try different keywords or remove filters.</div>
                 </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>How do I fix a laptop that won't turn on?</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
+                <!-- Sidebar -->
+                <aside class="faq-side" aria-label="Help & tips">
+                    <div class="card">
+                        <h4>Quick troubleshooting tips</h4>
+                        <ul style="margin:.2rem 0 0 1rem; color:var(--muted-foreground);">
+                            <li><strong>Restart first:</strong> it often fixes transient issues.</li>
+                            <li><strong>Back up:</strong> always backup before firmware/major changes.</li>
+                            <li><strong>Use vendor drivers:</strong> download drivers & BIOS from the official support page.</li>
+                        </ul>
                     </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            First, try a hard reset: disconnect power, remove the battery (if removable), press and hold the power button for 30 seconds, then reconnect everything and try again. If that doesn't work, check your power adapter and cable for damage. The issue could also be related to RAM, so try reseating your RAM modules. If none of these work, you may need professional repair.
-                        </div>
-                    </div>
-                </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What causes laptop overheating and how do I prevent it?</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
+                    <div class="card">
+                        <h4>Contact support</h4>
+                        <p style="margin:.2rem 0 .6rem; color:var(--muted-foreground)">If you can't resolve the problem, email our support team or book a diagnostic appointment.</p>
+                        <div class="contact-list"><a href="mailto:techcare@gmail.com">techcare@gmail.com</a></div>
                     </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            Overheating is usually caused by dust buildup in cooling vents, heavy workloads, or operating in hot environments. Prevent overheating by: using your laptop on hard, flat surfaces; cleaning air vents regularly; using a cooling pad; avoiding direct sunlight; and closing resource-intensive programs when not needed. If overheating persists, you may need to clean internal fans or replace thermal paste.
-                        </div>
-                    </div>
-                </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Why is my laptop running so slow?</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            Slow performance can result from: too many startup programs, insufficient RAM, full hard drive, malware, or outdated hardware. Solutions include: disabling unnecessary startup apps, running disk cleanup, upgrading to an SSD, adding more RAM, running antivirus scans, and updating drivers. Also check if Windows is running updates in the background.
+                    <div class="card">
+                        <h4>Useful commands</h4>
+                        <div style="color:var(--muted-foreground); font-size:.95rem;">
+                            <p style="margin:.1rem 0 .3rem"><strong>Windows</strong></p>
+                            <ul style="margin:0 0 .35rem 1rem">
+                                <li><code>powercfg /batteryreport</code> — battery health report (HTML saved to user profile)</li>
+                                <li><code>chkdsk /f</code> — check and fix disk errors (may require restart)</li>
+                            </ul>
+                            <p style="margin:.1rem 0 .3rem"><strong>macOS</strong></p>
+                            <ul style="margin:0 0 0 1rem">
+                                <li>About This Mac → System Report → Power — battery details & cycle count</li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>How do I fix a laptop screen that's flickering?</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            Screen flickering can be caused by incompatible or outdated display drivers, incorrect refresh rate settings, or loose display cables. First, update your graphics drivers. Then check your display refresh rate in Windows settings and try different values. If the problem persists, it might be a hardware issue with the display cable or screen itself requiring professional repair.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>My laptop keyboard isn't working. What should I do?</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            For non-working keyboards, try these steps: restart your laptop, check if keyboard is disabled in Device Manager, update keyboard drivers, test in safe mode, and clean under keys if they're sticky. If specific keys don't work, there may be liquid damage or debris. External keyboards can be used as a temporary solution while arranging repair.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>How often should I clean my laptop?</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            Clean your laptop's exterior and keyboard weekly with a microfiber cloth. Clean air vents every 3-6 months using compressed air. For internal cleaning (fans, heatsinks), do it every 6-12 months depending on your environment. Dusty or pet-friendly homes may require more frequent cleaning. Always power off and unplug before cleaning.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Can I upgrade my laptop's RAM and storage?</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            Most laptops allow RAM upgrades, and many support storage upgrades from HDD to SSD. Check your laptop's manual or manufacturer website for upgrade options. Ultrabooks and some modern laptops have soldered RAM that can't be upgraded. Storage is usually easier to upgrade - replacing an HDD with an SSD provides the biggest performance boost you can make to an older laptop.
-                        </div>
-                    </div>
-                </div>
+                </aside>
             </div>
         </div>
     </section>
 
+
  <!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <div class="footer-grid">
-            <div class="footer-brand">
-
-                <p class="footer-description">
-                    Your trusted resource for laptop troubleshooting and repair solutions. Expert-verified guides helping 50,000+ users solve their tech problems.
-                </p>
-                <div class="footer-badges">
-                    <span class="badge-outline">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                        </svg>
-                        SSL Secured
-                    </span>
-                    <span class="badge-outline">Privacy Protected</span>
-                    <span class="badge-outline">Expert Verified</span>
-                </div>
-            </div> 
-        </div>
-
-        <div class="footer-bottom">
-            <p>&copy; SLSU LUCENA.</p>
-            <div class="footer-contact">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                    <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-                <a href="mailto:techcare@gmail.com" data-testid="link-email-support">techcare@gmail.com</a>
+<footer class="footer" aria-label="Site footer">
+    <div class="container" style="padding:1.25rem 0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;">
+            <div style="color:var(--muted-foreground); font-size:.95rem;">
+                &copy; SLSU LUCENA. Your trusted resource for laptop troubleshooting and repair solutions.
+            </div>
+            <div style="display:flex; gap:.6rem; align-items:center;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <a href="mailto:techcare@gmail.com" style="color:var(--muted-foreground); font-weight:600;">techcare@gmail.com</a>
             </div>
         </div>
     </div>

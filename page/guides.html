@@ -11,14 +11,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
-  <style>
+ <style>
     /* Card split into media (top) + content (bottom) vertically.
-       Responsive: remains single-column card on all viewports. */
+       Responsive: becomes two-column grid on wider viewports so smaller cards sit side-by-side. */
+
+    :root {
+      /* Central control for thumbnail ratio. Use 4/3 because YouTube hqdefault.jpg is 480x360 (4:3),
+         this keeps thumbnails proportional. On large screens we'll use a fixed pixel height
+         to match the original thumbnail size more closely. */
+      --thumb-ratio: 4 / 3;
+    }
+
     .guide-grid {
       display: grid;
       gap: 1rem;
       margin-bottom: 2rem;
-      grid-template-columns: 1fr; /* ensure the list of cards stacks vertically */
+      grid-template-columns: 1fr; /* stack by default on narrow screens */
+    }
+
+    /* show two cards side-by-side on medium+ screens */
+    @media (min-width: 720px) {
+      .guide-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
     }
 
     .blog-post-card {
@@ -26,7 +42,7 @@
       grid-template-columns: 1fr; /* vertical card: media on top, content below */
       gap: 0;
       align-items: stretch;
-      border-radius: 12px;
+      border-radius: 10px;
       border: 1px solid var(--card-border, #e6e6e6);
       background: var(--card, #fff);
       overflow: hidden;
@@ -34,61 +50,157 @@
       cursor: pointer;
       text-decoration: none;
       color: inherit;
+      font-size: 0.95rem;
+      height: 100%;
     }
 
-    /* Left/top side (media) */
+    /* Top media
+       Use aspect-ratio driven by --thumb-ratio so thumbnails are proportional to YouTube originals.
+       For large screens we use a fixed height (360px) to match the original HQ thumbnail size. */
     .post-image {
       width: 100%;
-      height: 260px; /* taller thumbnail for vertical layout */
-      min-height: 180px;
+      aspect-ratio: var(--thumb-ratio);        /* proportional by default (4:3) */
       display: block;
       background: #f3f3f3;
       overflow: hidden;
       position: relative;
+      border-bottom: 1px solid var(--card-border, #e6e6e6);
+      min-height: 180px; /* safeguard so image doesn't get too small at narrow widths */
     }
     .post-image img {
       width: 100%;
       height: 100%;
       display: block;
       object-fit: cover;
+      object-position: center;
       transition: transform .35s ease;
     }
     .blog-post-card:hover .post-image img {
-      transform: scale(1.03);
+      transform: scale(1.02);
     }
 
-    /* Bottom side (content) */
+    /* On wide (desktop) screens use a fixed height that matches the original YouTube hqdefault scale (360px) */
+    @media (min-width: 1200px) {
+      .post-image {
+        aspect-ratio: auto;
+        height: 340px; /* same vertical size as original hqdefault when scaled */
+        min-height: 340px;
+      }
+    }
+
+    /* Content */
     .post-content {
-      padding: 1.25rem 1.5rem;
+      padding: 0.9rem 1rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border-top: 1px solid var(--card-border, #e6e6e6); /* visual divider moved to top for vertical layout */
+      border-top: none;
       background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
     }
 
-    .post-meta { color: var(--muted-foreground); font-size: .9rem; display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem; }
-    .post-title { margin: 0 0 .5rem 0; font-size: 1.125rem; font-weight: 700; color: var(--foreground); }
-    .post-excerpt { margin: 0 0 1rem 0; color: var(--muted-foreground); line-height:1.6; flex:1; }
+    .post-meta { color: var(--muted-foreground); font-size: .85rem; display:flex; gap:.5rem; align-items:center; margin-bottom:.4rem; }
+    .post-title { margin: 0 0 .4rem 0; font-size: 1.025rem; font-weight: 700; color: var(--foreground); }
+    .post-excerpt { margin: 0 0 .8rem 0; color: var(--muted-foreground); line-height:1.5; flex:1; font-size: .95rem; }
 
-    .post-footer { display:flex; justify-content:space-between; align-items:center; gap:.5rem; margin-top: 1rem; }
-    .open-modal { border:1px solid var(--card-border); background:transparent; padding:.35rem .6rem; border-radius:.375rem; font-size:.875rem; cursor:pointer; color:var(--foreground); }
+    .post-footer { display:flex; justify-content:space-between; align-items:center; gap:.5rem; margin-top: .6rem; }
+    .open-modal { border:1px solid var(--card-border); background:transparent; padding:.25rem .5rem; border-radius:.375rem; font-size:.825rem; cursor:pointer; color:var(--foreground); }
 
     /* Hover lift */
     .blog-post-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 30px rgba(16,24,40,0.08);
-      border-color: rgba(37,99,235,0.12);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(16,24,40,0.06);
+      border-color: rgba(37,99,235,0.08);
     }
 
-    /* Small screens keep the same vertical card but adjust image height */
-    @media (max-width: 880px) {
+    /* Mobile: keep a tall ratio but cap height so thumbnails don't dominate tiny screens */
+    @media (max-width: 720px) {
       .post-image {
-        height: 200px;
+        aspect-ratio: 4 / 3;
+        min-height: 220px;
+        height: auto;
       }
       .post-content {
-        padding: 1rem;
+        padding: .9rem 1rem;
       }
+    }
+
+    /* Make modal scrollable */
+    .modal {
+      display: flex;
+      flex-direction: column;
+      max-height: 80vh;
+      overflow: hidden;
+    }
+    .modal-body {
+      overflow: auto;
+      max-height: calc(80vh - 150px);
+      padding: 1rem 1.5rem;
+    }
+
+    /* Improve readability of step lists inside modal */
+    .modal-body ol {
+      margin-left: 1rem;
+      margin-bottom: 1rem;
+    }
+    .modal-body li {
+      margin-bottom: 0.6rem;
+      line-height: 1.5;
+    }
+    .step-tip {
+      font-size: .9rem;
+      color: var(--muted-foreground);
+      margin-top: .25rem;
+    }
+
+    /* Professional tutorial card inside modal */
+    .steps-card {
+      border-left: 4px solid var(--primary);
+      background: linear-gradient(180deg, rgba(0,0,0,0.01), transparent);
+      padding: 1rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .tutorial-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      margin-bottom: .75rem;
+      align-items: center;
+    }
+    .meta-item {
+      display: inline-flex;
+      gap: .5rem;
+      align-items: center;
+      background: var(--muted);
+      color: var(--muted-foreground);
+      padding: .35rem .6rem;
+      border-radius: .375rem;
+      font-size: .9rem;
+    }
+    .tools-list { margin: .5rem 0 0 0; display:flex; gap:.5rem; flex-wrap:wrap; }
+    .tools-list .tool { background: var(--accent); color: var(--accent-foreground); padding:.25rem .5rem; border-radius:.25rem; font-weight:600; font-size:.9rem; }
+
+    .warning {
+      margin-top: .6rem;
+      padding: .6rem .75rem;
+      background: rgba(255, 236, 179, 0.35);
+      border-left: 3px solid #f59e0b;
+      color: #7c2d12;
+      border-radius: .25rem;
+      font-size: .95rem;
+    }
+
+    .step-sub {
+      color: var(--muted-foreground);
+      font-size: .95rem;
+      margin-top: .25rem;
+    }
+
+    /* small responsive tweaks inside modal */
+    @media (max-width: 480px) {
+      .tutorial-meta { gap: .5rem; }
+      .meta-item { font-size: .82rem; padding: .3rem .45rem; }
     }
   </style>
 </head>
@@ -123,11 +235,32 @@
         </div>
 
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-          <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle></svg>
-        </button>
-        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
-          <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line></svg>
-        </button>
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                                <button class="mobile-menu-toggle" id="mobile-menu-toggle" data-testid="button-mobile-menu">
+                    <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
       </div>
     </div>
 
@@ -151,7 +284,6 @@
     <div class="container">
 
       <!-- Battery Issues -->
-      <section class="category-section-full" id="battery">
         <h2 class="section-title">Battery Issues</h2>
         <div class="guide-grid">
           <article class="blog-post-card modal-trigger"
@@ -176,6 +308,68 @@
                 </div>
               </div>
             </div>
+
+            <!-- professional steps template -->
+            <template class="steps-template">
+              <div class="steps-card" aria-live="polite">
+                <div class="tutorial-meta">
+                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Diagnose why a laptop won't charge — adapter, jack, battery, or software.</span></div>
+                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Intermediate</span></div>
+                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>15–45 min</span></div>
+                </div>
+
+                <div>
+                  <strong>Tools & supplies</strong>
+                  <div class="tools-list" aria-hidden="false">
+                    <span class="tool">Multimeter</span>
+                    <span class="tool">Compressed air</span>
+                    <span class="tool">Spudger</span>
+                    <span class="tool">Replacement adapter</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <strong>Procedure</strong>
+                <ol>
+                  <li>
+                    Verify external power first.
+                    <div class="step-sub">Plug the adapter into a known-good outlet and check adapter LED. Try a different power outlet and a different charger if available.</div>
+                  </li>
+
+                  <li>
+                    Inspect the adapter and cable.
+                    <div class="step-sub">Look for frays, bent pins, or a loose connector. Use a multimeter (DC jack center pin) to confirm expected voltage per adapter label.</div>
+                  </li>
+
+                  <li>
+                    Check the laptop charging port.
+                    <div class="step-sub">Power down and use compressed air to remove debris. Look for bent pins or looseness; slight wobbles suggest mechanical/jack issues.</div>
+                  </li>
+
+                  <li>
+                    Isolate the battery vs adapter.
+                    <div class="step-sub">If battery is removable: remove it and boot on AC only. If boot succeeds, battery likely faulty. If non-removable: check OS charging status and AC-present flags in BIOS/UEFI.</div>
+                  </li>
+
+                  <li>
+                    Software and firmware checks.
+                    <div class="step-sub">Update BIOS/EC and power drivers from the vendor. On Windows run <code>powercfg /batteryreport</code> and inspect the report.</div>
+                  </li>
+
+                  <li>
+                    Repair or replace.
+                    <div class="step-sub">Replace the adapter or battery if confirmed faulty. For a loose charging jack, consult service manual—repair typically requires board-level rework or jack replacement.</div>
+                  </li>
+                </ol>
+
+                <div class="warning" role="alert">
+                  Safety: Disconnect mains before disassembling. If you're not comfortable with soldering or board rework, seek professional repair.
+                </div>
+
+                <div class="step-tip">Tip: Document the model and serial number before ordering replacement parts to ensure compatibility.</div>
+              </div>
+            </template>
           </article>
 
           <article class="blog-post-card modal-trigger"
@@ -200,6 +394,61 @@
                 </div>
               </div>
             </div>
+
+            <template class="steps-template">
+              <div class="steps-card">
+                <div class="tutorial-meta">
+                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Reduce unexpected battery drain and identify root causes.</span></div>
+                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Beginner</span></div>
+                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>10–30 min</span></div>
+                </div>
+
+                <div>
+                  <strong>Tools & supplies</strong>
+                  <div class="tools-list">
+                    <span class="tool">OS Task Manager</span>
+                    <span class="tool">Activity Monitor (macOS)</span>
+                    <span class="tool">Power adapter</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <strong>Procedure</strong>
+                <ol>
+                  <li>
+                    Identify high energy processes.
+                    <div class="step-sub">Open Task Manager / Activity Monitor and sort by energy, CPU, or disk. Note background services using abnormal resources.</div>
+                  </li>
+
+                  <li>
+                    Remove or disable unnecessary apps and startups.
+                    <div class="step-sub">Disable non-essential startup items and background agents. On Windows use Startup tab; on macOS use Login Items.</div>
+                  </li>
+
+                  <li>
+                    Adjust power and display settings.
+                    <div class="step-sub">Lower brightness, shorten screen timeout, disable keyboard backlight when not needed, and enable power saving profiles.</div>
+                  </li>
+
+                  <li>
+                    Network and peripherals.
+                    <div class="step-sub">Turn off Wi‑Fi/Bluetooth when not in use and disconnect unused USB devices that consume power.</div>
+                  </li>
+
+                  <li>
+                    Firmware & battery health.
+                    <div class="step-sub">Update drivers/firmware. Generate battery reports (e.g., <code>powercfg /batteryreport</code>) and check battery capacity vs design. Replace the battery if capacity loss is significant.</div>
+                  </li>
+                </ol>
+
+                <div class="warning">
+                  Note: Some system processes (indexers, backup jobs, updates) cause temporary higher drain — verify after a restart before replacing hardware.
+                </div>
+
+                <div class="step-tip">Tip: Use the battery report to see capacity decline over time; >20% decline is a common threshold to consider replacement.</div>
+              </div>
+            </template>
           </article>
 
           <article class="blog-post-card modal-trigger"
@@ -224,9 +473,137 @@
                 </div>
               </div>
             </div>
+
+            <template class="steps-template">
+              <div class="steps-card">
+                <div class="tutorial-meta">
+                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Assess battery health and perform a calibration cycle if charge reporting is inaccurate.</span></div>
+                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Beginner</span></div>
+                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>2–3 hours</span></div>
+                </div>
+
+                <div>
+                  <strong>Tools & supplies</strong>
+                  <div class="tools-list">
+                    <span class="tool">Power adapter</span>
+                    <span class="tool">Battery report (Windows)</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <strong>Procedure</strong>
+                <ol>
+                  <li>
+                    Generate battery health data.
+                    <div class="step-sub">Windows: run <code>powercfg /batteryreport</code>. macOS: About This Mac → System Report → Power to view cycle count & health.</div>
+                  </li>
+
+                  <li>
+                    Review metrics.
+                    <div class="step-sub">Compare design capacity vs full charge capacity. Note cycle count and estimated remaining capacity.</div>
+                  </li>
+
+                  <li>
+                    Calibrate (if readings are inaccurate).
+                    <div class="step-sub">Charge to 100% and keep charging for 1–2 hours, then unplug and use normally until the laptop fully discharges and shuts down. Recharge uninterrupted to 100%.</div>
+                  </li>
+
+                  <li>
+                    Evaluate results.
+                    <div class="step-sub">Regenerate the battery report and compare capacities. If capacity loss is large (>20%), schedule a battery replacement.</div>
+                  </li>
+                </ol>
+
+                <div class="warning">
+                  Note: Modern smart batteries rarely need calibration — only perform if reported values are inconsistent or battery behaves unusually.
+                </div>
+
+                <div class="step-tip">Tip: Keep a regular backup before long maintenance steps; calibration doesn't change battery health but improves reporting accuracy.</div>
+              </div>
+            </template>
+          </article>
+
+          <article class="blog-post-card modal-trigger"
+                   data-category="Battery"
+                   data-title="Charging Port Loose - Repair Tips"
+                   data-desc="Diagnose a wobbly charging port, secure connections, and safe soldering tips for repair."
+                   data-video="https://www.youtube.com/watch?v=2Vv-BfVoq4g">
+            <div class="post-image">
+              <img src="https://img.youtube.com/vi/2Vv-BfVoq4g/hqdefault.jpg" alt="Charging Port Loose - thumbnail" loading="lazy">
+            </div>
+            <div class="post-content">
+              <div>
+                <div class="post-meta"><span class="post-category">Battery</span> • <span>8 Min</span></div>
+                <h3 class="post-title">Charging Port Loose - Repair Tips</h3>
+                <p class="post-excerpt">Diagnose a wobbly charging port, secure connections, and safe soldering tips for repair.</p>
+              </div>
+              <div class="post-footer">
+                <div class="post-author"><div class="avatar">AR</div><span>Aaron</span></div>
+                <div style="display:flex;gap:.5rem;align-items:center">
+                  <span class="post-date">Dec 2024</span>
+                  <button class="open-modal" aria-haspopup="dialog">Quick view</button>
+                </div>
+              </div>
+            </div>
+
+            <template class="steps-template">
+              <div class="steps-card">
+                <div class="tutorial-meta">
+                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Inspect and stabilize a loose DC jack or charging connector.</span></div>
+                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Advanced (board-level)</span></div>
+                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>20–60 min</span></div>
+                </div>
+
+                <div>
+                  <strong>Tools & supplies</strong>
+                  <div class="tools-list">
+                    <span class="tool">Precision toolkit</span>
+                    <span class="tool">Soldering iron (finest tip)</span>
+                    <span class="tool">Multimeter</span>
+                    <span class="tool">Spare jack / daughterboard</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <strong>Procedure</strong>
+                <ol>
+                  <li>
+                    External checks.
+                    <div class="step-sub">Try a different charger to determine whether the adapter or jack is the issue. Inspect port for debris or broken plastic tabs.</div>
+                  </li>
+
+                  <li>
+                    Access the jack safely.
+                    <div class="step-sub">Power off and remove battery (if possible). Open chassis following the service manual. Ground yourself to prevent ESD damage.</div>
+                  </li>
+
+                  <li>
+                    Inspect solder joints and mounting.
+                    <div class="step-sub">Look for cracked pads, lifted traces, or cold solder joints. Wiggle the jack gently to see joint movement.</div>
+                  </li>
+
+                  <li>
+                    Repair options.
+                    <div class="step-sub">Minor: reflow or re-solder loose joints. Major: replace the jack assembly or the daughterboard. Use flux and proper temperature to avoid pad lift.</div>
+                  </li>
+
+                  <li>
+                    Re-test and reassemble.
+                    <div class="step-sub">After repair, test with a voltmeter and multiple charging cycles before reassembly. Ensure mechanical stability with correct screws or insulating shims.</div>
+                  </li>
+                </ol>
+
+                <div class="warning">
+                  Caution: Board-level soldering risks permanent damage if pad lift or excessive heat occurs. If unsure, seek a qualified technician.
+                </div>
+
+                <div class="step-tip">Tip: Take photos during disassembly to speed up correct reassembly and part identification.</div>
+              </div>
+            </template>
           </article>
         </div>
-      </section>
 
       <!-- Overheating -->
       <section class="category-section-full" id="overheating">
@@ -254,6 +631,62 @@
                 </div>
               </div>
             </div>
+
+            <template class="steps-template">
+              <div class="steps-card">
+                <div class="tutorial-meta">
+                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Reduce overheating that causes unexpected shutdowns.</span></div>
+                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Intermediate</span></div>
+                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>30–90 min</span></div>
+                </div>
+
+                <div>
+                  <strong>Tools & supplies</strong>
+                  <div class="tools-list">
+                    <span class="tool">Compressed air</span>
+                    <span class="tool">Thermal paste</span>
+                    <span class="tool">Screwdriver set</span>
+                    <span class="tool">Temperature monitor (HWInfo)</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <strong>Procedure</strong>
+                <ol>
+                  <li>
+                    Clean intake and exhaust.
+                    <div class="step-sub">Use compressed air to remove dust. Ensure laptop sits on a hard surface during operation to maximize airflow.</div>
+                  </li>
+
+                  <li>
+                    Confirm thermal behavior.
+                    <div class="step-sub">Run a short stress test while monitoring temps to confirm overheating patterns and identify which component spikes first.</div>
+                  </li>
+
+                  <li>
+                    Service cooling system.
+                    <div class="step-sub">If temps are high, remove heatsink, clean old thermal paste, and reapply high-quality paste. Replace thermal pads where needed.</div>
+                  </li>
+
+                  <li>
+                    Firmware and fan control.
+                    <div class="step-sub">Update BIOS and fan firmware. Set an appropriate fan curve or enable performance/active cooling profiles in BIOS.</div>
+                  </li>
+
+                  <li>
+                    When to seek help.
+                    <div class="step-sub">If heatpipes are damaged, fans fail, or temperatures remain excessive after maintenance, seek professional diagnostics and repair.</div>
+                  </li>
+                </ol>
+
+                <div class="warning">
+                  Caution: When removing heatsinks, follow torque/sequence recommendations in the service manual. Incorrect reassembly can damage the CPU/GPU.
+                </div>
+
+                <div class="step-tip">Tip: Small improvements (cleaning + new paste) often yield the largest temperature drops at lowest cost.</div>
+              </div>
+            </template>
           </article>
 
           <article class="blog-post-card modal-trigger"
@@ -278,6 +711,56 @@
                 </div>
               </div>
             </div>
+
+            <template class="steps-template">
+              <div class="steps-card">
+                <div class="tutorial-meta">
+                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Identify and eliminate fan noise sources — cleaning, balancing, or replacement.</span></div>
+                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Intermediate</span></div>
+                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>15–45 min</span></div>
+                </div>
+
+                <div>
+                  <strong>Tools & supplies</strong>
+                  <div class="tools-list">
+                    <span class="tool">Compressed air</span>
+                    <span class="tool">Small brush</span>
+                    <span class="tool">Replacement fan</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <strong>Procedure</strong>
+                <ol>
+                  <li>
+                    Observe and localize the noise.
+                    <div class="step-sub">Run a light stress test and listen to determine which fan or area is noisy.</div>
+                  </li>
+
+                  <li>
+                    Clean and inspect.
+                    <div class="step-sub">Power off, open chassis, and clean fan blades and surrounding area. Check blades for chips or warping.</div>
+                  </li>
+
+                  <li>
+                    Check mounting and bearings.
+                    <div class="step-sub">Verify screws and rubber dampers are in place. If bearing noise remains, consider lubrication only if the fan design supports it.</div>
+                  </li>
+
+                  <li>
+                    Replace if necessary.
+                    <div class="step-sub">If cleaning and lubrication don't help, replace the fan with an OEM or compatible assembly.</div>
+                  </li>
+                </ol>
+
+                <div class="warning">
+                  Note: Some laptop fans are sealed and not intended for lubrication. Forcing repairs can shorten component life.
+                </div>
+
+                <div class="step-tip">Tip: Replacing the heatsink/thermal interface along with the fan can prevent repeated high-speed fan operation and future noise.</div>
+              </div>
+            </template>
           </article>
 
           <article class="blog-post-card modal-trigger"
@@ -302,12 +785,136 @@
                 </div>
               </div>
             </div>
+
+            <template class="steps-template">
+              <div class="steps-card">
+                <div class="tutorial-meta">
+                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Mitigate CPU thermal throttling to restore consistent performance.</span></div>
+                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Intermediate</span></div>
+                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>30–90 min</span></div>
+                </div>
+
+                <div>
+                  <strong>Tools & supplies</strong>
+                  <div class="tools-list">
+                    <span class="tool">Thermal paste</span>
+                    <span class="tool">Compressed air</span>
+                    <span class="tool">Monitoring tool</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <strong>Procedure</strong>
+                <ol>
+                  <li>
+                    Confirm throttling.
+                    <div class="step-sub">Monitor temps under load and observe frequency drops. Use tools like HWInfo or ThrottleStop.</div>
+                  </li>
+
+                  <li>
+                    Clean cooling path.
+                    <div class="step-sub">Remove dust from heatsink and fans. Ensure unobstructed airflow and proper fan operation.</div>
+                  </li>
+
+                  <li>
+                    Improve thermal interface.
+                    <div class="step-sub">Replace old thermal paste with a reputable compound, ensuring correct application and heatsink torque pattern.</div>
+                  </li>
+
+                  <li>
+                    Adjust performance limits.
+                    <div class="step-sub">If needed, lower turbo limits in BIOS or OS power settings to keep sustained temps in check.</div>
+                  </li>
+
+                  <li>
+                    Consider hardware upgrades.
+                    <div class="step-sub">If thermals persist, evaluate heatsink/fan replacement or professional repair for failed heatpipes.</div>
+                  </li>
+                </ol>
+
+                <div class="warning">
+                  Caution: Undervolting and BIOS changes can affect stability. Make incremental changes and test thoroughly.
+                </div>
+
+                <div class="step-tip">Tip: Use incremental stress tests after each change to verify temperature and stability improvements.</div>
+              </div>
+            </template>
+          </article>
+
+          <article class="blog-post-card modal-trigger"
+                   data-category="Cooling"
+                   data-title="Laptop shutting down."
+                   data-desc="How To Stop PC From Overheating And Shutting Down"
+                   data-video="https://www.youtube.com/watch?v=_jIfg7SxppE">
+            <div class="post-image">
+              <img src="https://img.youtube.com/vi/_jIfg7SxppE/hqdefault.jpg" alt="Laptop shutting down - thumbnail" loading="lazy">
+            </div>
+            <div class="post-content">
+              <div>
+                <div class="post-meta"><span class="post-category">Cooling</span> • <span>4 Min</span></div>
+                <h3 class="post-title">Laptop shutting down.</h3>
+                <p class="post-excerpt">How To Stop PC From Overheating And Shutting Down</p>
+              </div>
+              <div class="post-footer">
+                <div class="post-author"><div class="avatar">AK</div><span>Anna</span></div>
+                <div style="display:flex;gap:.5rem;align-items:center">
+                  <span class="post-date">Dec 2024</span>
+                  <button class="open-modal" aria-haspopup="dialog">Quick view</button>
+                </div>
+              </div>
+            </div>
+
+            <template class="steps-template">
+              <div class="steps-card">
+                <div class="tutorial-meta">
+                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Quick checklist to prevent abrupt shutdowns due to overheating.</span></div>
+                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Beginner → Intermediate</span></div>
+                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>10–60 min</span></div>
+                </div>
+
+                <div>
+                  <strong>Tools & supplies</strong>
+                  <div class="tools-list">
+                    <span class="tool">Compressed air</span>
+                    <span class="tool">Temperature monitor</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <strong>Procedure</strong>
+                <ol>
+                  <li>
+                    Immediate mitigation.
+                    <div class="step-sub">Move the laptop to a cool surface, stop heavy workloads, and allow it to cool before further diagnosis.</div>
+                  </li>
+                  <li>
+                    Clean and check fans.
+                    <div class="step-sub">Use compressed air and ensure fan spin; clogged fans often cause abrupt shutdowns.</div>
+                  </li>
+                  <li>
+                    Short-term software control.
+                    <div class="step-sub">Set power profile to Balanced/Power Saver and limit CPU maximum state in OS to reduce heat.</div>
+                  </li>
+                  <li>
+                    Longer-term fixes.
+                    <div class="step-sub">Reapply thermal paste, ensure heatsink contact, or seek hardware repair if cooling components have failed.</div>
+                  </li>
+                </ol>
+
+                <div class="warning">
+                  Warning: Running a hot system repeatedly can damage components. Address the root cause promptly.
+                </div>
+
+                <div class="step-tip">Tip: Document temperatures before and after each step to see progress and guide next actions.</div>
+              </div>
+            </template>
           </article>
         </div>
       </section>
 
       <!-- Performance -->
-      <section class="category-section-full" id="performance">
         <h2 class="section-title">Performance Issues</h2>
         <div class="guide-grid">
           <article class="blog-post-card modal-trigger"
@@ -332,6 +939,53 @@
                 </div>
               </div>
             </div>
+
+            <template class="steps-template">
+              <div class="steps-card">
+                <div class="tutorial-meta">
+                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Systematic steps to recover responsiveness.</span></div>
+                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Beginner → Advanced</span></div>
+                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>10–120 min</span></div>
+                </div>
+
+                <div>
+                  <strong>Tools & supplies</strong>
+                  <div class="tools-list">
+                    <span class="tool">Disk tools</span>
+                    <span class="tool">Antivirus</span>
+                    <span class="tool">Backup drive</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <strong>Procedure</strong>
+                <ol>
+                  <li>
+                    Diagnose resource usage.
+                    <div class="step-sub">Task Manager → check CPU, Disk, Memory. Identify runaway processes and services.</div>
+                  </li>
+                  <li>
+                    Malware & cleanup.
+                    <div class="step-sub">Run a full AV scan and remove junk files. Consider disk cleanup utilities and clearing browser caches.</div>
+                  </li>
+                  <li>
+                    Storage health & upgrades.
+                    <div class="step-sub">Check SMART and run chkdsk. Replace failing HDD with SSD for large performance gains.</div>
+                  </li>
+                  <li>
+                    Memory & software.
+                    <div class="step-sub">If memory is saturated, add more RAM. Update drivers and consider a clean OS install if software corruption is suspected.</div>
+                  </li>
+                </ol>
+
+                <div class="warning">
+                  Backup important data before performing drive operations or OS resets.
+                </div>
+
+                <div class="step-tip">Tip: Upgrading to an SSD typically has the single largest impact on perceived speed for older systems.</div>
+              </div>
+            </template>
           </article>
 
           <article class="blog-post-card modal-trigger"
@@ -356,6 +1010,52 @@
                 </div>
               </div>
             </div>
+
+            <template class="steps-template">
+              <div class="steps-card">
+                <div class="tutorial-meta">
+                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Speed up Windows boot by removing bottlenecks.</span></div>
+                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Beginner</span></div>
+                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>15–60 min</span></div>
+                </div>
+
+                <div>
+                  <strong>Tools & supplies</strong>
+                  <div class="tools-list">
+                    <span class="tool">Task Manager</span>
+                    <span class="tool">Disk utilities</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <strong>Procedure</strong>
+                <ol>
+                  <li>
+                    Manage startup items.
+                    <div class="step-sub">Task Manager → Startup: disable non-essential entries and reboot to measure improvement.</div>
+                  </li>
+                  <li>
+                    Disk & driver checks.
+                    <div class="step-sub">Run chkdsk / SMART checks and update drivers; remove pending updates that may be blocking boot.</div>
+                  </li>
+                  <li>
+                    Fast Startup & hardware.
+                    <div class="step-sub">Enable Fast Startup and consider replacing an HDD with SSD for the most dramatic improvement.</div>
+                  </li>
+                  <li>
+                    System refresh.
+                    <div class="step-sub">If persistent, backup and consider a clean Windows install to remove long-term software cruft.</div>
+                  </li>
+                </ol>
+
+                <div class="warning">
+                  Note: Disabling security-related startup items can reduce protection. Verify before disabling AV or system tools.
+                </div>
+
+                <div class="step-tip">Tip: Test after each change (one at a time) to track what produced the best improvement.</div>
+              </div>
+            </template>
           </article>
 
           <article class="blog-post-card modal-trigger"
@@ -380,14 +1080,128 @@
                 </div>
               </div>
             </div>
+
+            <template class="steps-template">
+              <div class="steps-card">
+                <div class="tutorial-meta">
+                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Steps to isolate and fix application freezes.</span></div>
+                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Beginner → Intermediate</span></div>
+                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>15–60 min</span></div>
+                </div>
+
+                <div>
+                  <strong>Tools & supplies</strong>
+                  <div class="tools-list">
+                    <span class="tool">Task Manager</span>
+                    <span class="tool">memtest86</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <strong>Procedure</strong>
+                <ol>
+                  <li>
+                    Inspect resource usage.
+                    <div class="step-sub">Open Task Manager to identify processes using excessive CPU, memory, or disk.</div>
+                  </li>
+                  <li>
+                    Update software & drivers.
+                    <div class="step-sub">Ensure the app and required runtimes (e.g., .NET, runtimes) are up-to-date. Update GPU drivers for GPU-accelerated apps.</div>
+                  </li>
+                  <li>
+                    Hardware checks.
+                    <div class="step-sub">Run memory diagnostics and disk checks to rule out failing components causing instability.</div>
+                  </li>
+                  <li>
+                    Clean environment.
+                    <div class="step-sub">Try clean boot or safe mode to isolate third-party conflicts, then reinstall the application if needed.</div>
+                  </li>
+                </ol>
+
+                <div class="warning">
+                  Note: Reinstalling or resetting applications may remove user data — backup application profiles where appropriate.
+                </div>
+
+                <div class="step-tip">Tip: Reproduce the freeze consistently to test solutions effectively (e.g., using the same dataset or workload).</div>
+              </div>
+            </template>
+          </article>
+
+          <article class="blog-post-card modal-trigger"
+                   data-category="Cooling"
+                   data-title="How To Fix Windows 10 Lagging"
+                   data-desc="Optimize your laptop windows."
+                   data-video="https://www.youtube.com/watch?v=hUt1sYLFMkQ">
+            <div class="post-image">
+              <img src="https://img.youtube.com/vi/hUt1sYLFMkQ/hqdefault.jpg" alt="How To Fix Windows 10 Lagging - thumbnail" loading="lazy">
+            </div>
+            <div class="post-content">
+              <div>
+                <div class="post-meta"><span class="post-category">Cooling</span> • <span>10 Min</span></div>
+                <h3 class="post-title">How To Fix Windows 10 Lagging</h3>
+                <p class="post-excerpt">Optimize your laptop windows.</p>
+              </div>
+              <div class="post-footer">
+                <div class="post-author"><div class="avatar">AK</div><span>Anna</span></div>
+                <div style="display:flex;gap:.5rem;align-items:center">
+                  <span class="post-date">Dec 2024</span>
+                  <button class="open-modal" aria-haspopup="dialog">Quick view</button>
+                </div>
+              </div>
+            </div>
+
+            <template class="steps-template">
+              <div class="steps-card">
+                <div class="tutorial-meta">
+                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Practical steps to reduce lag and improve responsiveness on Windows 10.</span></div>
+                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Beginner</span></div>
+                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>15–60 min</span></div>
+                </div>
+
+                <div>
+                  <strong>Tools & supplies</strong>
+                  <div class="tools-list">
+                    <span class="tool">Disk Cleanup</span>
+                    <span class="tool">Antivirus</span>
+                  </div>
+                </div>
+
+                <hr>
+
+                <strong>Procedure</strong>
+                <ol>
+                  <li>
+                    Remove resource-heavy startups.
+                    <div class="step-sub">Task Manager → Startup: disable unnecessary programs that start with Windows.</div>
+                  </li>
+                  <li>
+                    Clean storage and optimize.
+                    <div class="step-sub">Run Disk Cleanup, remove temporary files, and defragment (HDD) or optimize (SSD).</div>
+                  </li>
+                  <li>
+                    Update system & drivers.
+                    <div class="step-sub">Install latest Windows updates and vendor drivers, especially graphics and chipset.</div>
+                  </li>
+                  <li>
+                    Consider hardware upgrades.
+                    <div class="step-sub">If applicable, upgrade to SSD and increase RAM for sustained improvements.</div>
+                  </li>
+                </ol>
+
+                <div class="warning">
+                  Note: Make sure TRIM is enabled on SSDs and do not defragment SSDs with traditional defrag tools.
+                </div>
+
+                <div class="step-tip">Tip: Keep regular backups before performing large system changes or upgrades.</div>
+              </div>
+            </template>
           </article>
         </div>
-      </section>
-
     </div>
   </main>
 
-  <!-- Modal structure unchanged -->
+  <!-- Modal structure (now scrollable) -->
   <div id="modal-overlay" class="modal-overlay" aria-hidden="true" style="display:none;">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
       <button class="modal-close" aria-label="Close dialog">&times;</button>
@@ -398,6 +1212,8 @@
       <div class="modal-body">
         <p id="modal-desc"></p>
         <div id="modal-media" class="modal-media" aria-hidden="true"></div>
+        <!-- tutorial steps will be injected here -->
+        <div id="modal-steps"></div>
       </div>
       <footer class="modal-footer">
         <a id="modal-link" href="#" target="_blank" rel="noopener" class="btn btn-primary">Open full video / article</a>
@@ -428,6 +1244,111 @@
       </div>
     </div>
   </footer>
+
+  <!-- Minimal modal wiring script: copies per-article template content into modal and opens/closes overlay -->
+  <script>
+    (function () {
+      const overlay = document.getElementById('modal-overlay');
+      const modal = overlay.querySelector('.modal');
+      const titleEl = document.getElementById('modal-title');
+      const categoryEl = document.getElementById('modal-category');
+      const descEl = document.getElementById('modal-desc');
+      const mediaEl = document.getElementById('modal-media');
+      const stepsEl = document.getElementById('modal-steps');
+      const linkEl = document.getElementById('modal-link');
+      const closeButtons = modal.querySelectorAll('.modal-close');
+
+      function extractYouTubeId(url) {
+        // handle common youtube url formats
+        try {
+          const u = new URL(url);
+          if (u.hostname.includes('youtu.be')) return u.pathname.slice(1);
+          if (u.searchParams && u.searchParams.get('v')) return u.searchParams.get('v');
+        } catch (e) {
+          // fallback regex
+          const m = url.match(/v=([^&]+)/) || url.match(/\/([A-Za-z0-9_-]{11})$/);
+          if (m) return m[1];
+        }
+        return '';
+      }
+
+      function openModalFromArticle(article) {
+        const title = article.dataset.title || '';
+        const category = article.dataset.category || '';
+        const desc = article.dataset.desc || '';
+        const video = article.dataset.video || '#';
+
+        titleEl.textContent = title;
+        categoryEl.textContent = category;
+        descEl.textContent = desc;
+        linkEl.href = video;
+
+        // media: show a poster image if available and ensure it matches the declared video id
+        const videoId = extractYouTubeId(video);
+        mediaEl.innerHTML = '';
+        if (videoId) {
+          const poster = document.createElement('div');
+          poster.className = 'video-poster';
+          poster.innerHTML = '<img src="https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg" alt="poster">';
+          mediaEl.appendChild(poster);
+        } else {
+          // fallback: use img inside article if present
+          const articleImg = article.querySelector('.post-image img');
+          if (articleImg && articleImg.src) {
+            const poster = document.createElement('div');
+            poster.className = 'video-poster';
+            poster.innerHTML = '<img src="' + articleImg.src + '" alt="poster">';
+            mediaEl.appendChild(poster);
+          }
+        }
+
+        // steps template copying
+        const tpl = article.querySelector('template.steps-template');
+        if (tpl) {
+          stepsEl.innerHTML = tpl.innerHTML;
+        } else {
+          stepsEl.innerHTML = '';
+        }
+
+        overlay.style.display = 'flex';
+        overlay.setAttribute('aria-hidden', 'false');
+        // focus for accessibility
+        modal.focus();
+      }
+
+      // attach listeners to all triggers (articles and their "Quick view" buttons)
+      document.querySelectorAll('.modal-trigger').forEach(article => {
+        // clicking anywhere on the card opens the modal
+        article.addEventListener('click', function (e) {
+          openModalFromArticle(article);
+        });
+
+        // if there's a button inside the card, ensure it also works
+        article.querySelectorAll('.open-modal').forEach(btn => {
+          btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            openModalFromArticle(article);
+          });
+        });
+      });
+
+      // close handlers
+      function closeModal() {
+        overlay.style.display = 'none';
+        overlay.setAttribute('aria-hidden', 'true');
+        stepsEl.innerHTML = '';
+        mediaEl.innerHTML = '';
+      }
+      closeButtons.forEach(btn => btn.addEventListener('click', closeModal));
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeModal();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay.getAttribute('aria-hidden') === 'false') closeModal();
+      });
+    })();
+  </script>
+
   <script src="script.js"></script>
 </body>
 </html>
