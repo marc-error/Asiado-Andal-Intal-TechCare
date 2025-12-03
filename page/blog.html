@@ -10,6 +10,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
+       <script>
+      (function() {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') document.documentElement.classList.add('dark');
+          // prevent transition flashes while CSS is applied
+          document.documentElement.classList.add('no-transition');
+          // safety remove after a short delay in case the rest of the page doesn't remove it
+          setTimeout(function(){ document.documentElement.classList.remove('no-transition'); }, 120);
+        } catch (e) { /* silent */ }
+      })();
+    </script>
+   
     <!-- Inline CSS to ensure thumbnails cover the whole space -->
     <style>
       /* match the original icon slot and force the img to cover it */
@@ -138,11 +151,10 @@
             <p class="post-excerpt">Discover simple tweaks and optimizations that can dramatically improve your laptop's performance.</p>
             <div class="post-footer">
               <div class="post-author">
-                <div class="avatar">JD</div><span>John Doe</span>
+                <div class="avatar">GT</div><span>Geek Tutorial</span>
               </div>
               <div style="display:flex;gap:.5rem;align-items:center">
-                <span class="post-date">Dec 15, 2024</span>
-                <button class="open-modal" aria-haspopup="dialog">Quick view</button>
+                <span class="post-date">Apr 20, 2024</span>
               </div>
             </div>
           </div>
@@ -171,7 +183,6 @@
               </div>
               <div style="display:flex;gap:.5rem;align-items:center">
                 <span class="post-date">Dec 10, 2024</span>
-                <button class="open-modal" aria-haspopup="dialog">Quick view</button>
               </div>
             </div>
           </div>
@@ -196,11 +207,10 @@
             <p class="post-excerpt">Troubleshoot flickering, dead pixels, and other display problems with our comprehensive diagnostic guide.</p>
             <div class="post-footer">
               <div class="post-author">
-                <div class="avatar">MC</div><span>Mike Chen</span>
+                <div class="avatar">TT</div><span>Tropical Tech</span>
               </div>
               <div style="display:flex;gap:.5rem;align-items:center">
-                <span class="post-date">Dec 5, 2024</span>
-                <button class="open-modal" aria-haspopup="dialog">Quick view</button>
+                <span class="post-date">Nov 25, 2020</span>
               </div>
             </div>
           </div>
@@ -225,11 +235,10 @@
             <p class="post-excerpt">Keep your laptop cool and running efficiently with these proven cooling strategies and maintenance tips.</p>
             <div class="post-footer">
               <div class="post-author">
-                <div class="avatar">LW</div><span>Lisa Wang</span>
+                <div class="avatar">IV</div><span>Iviewgle</span>
               </div>
               <div style="display:flex;gap:.5rem;align-items:center">
-                <span class="post-date">Dec 1, 2024</span>
-                <button class="open-modal" aria-haspopup="dialog">Quick view</button>
+                <span class="post-date">Apr 20, 2023</span>
               </div>
             </div>
           </div>
@@ -254,11 +263,10 @@
             <p class="post-excerpt">Protect your laptop and data with these essential security measures every user should implement.</p>
             <div class="post-footer">
               <div class="post-author">
-                <div class="avatar">RJ</div><span>John Rob</span>
+                <div class="avatar">CT</div><span>CyberCPU Tech</span>
               </div>
               <div style="display:flex;gap:.5rem;align-items:center">
-                <span class="post-date">Nov 28, 2024</span>
-                <button class="open-modal" aria-haspopup="dialog">Quick view</button>
+                <span class="post-date">Nov 14, 2022</span>
               </div>
             </div>
           </div>
@@ -283,11 +291,10 @@
             <p class="post-excerpt">A comprehensive guide to keeping your laptop in top condition with monthly, quarterly, and yearly tasks.</p>
             <div class="post-footer">
               <div class="post-author">
-                <div class="avatar">AK</div><span>Anna Kim</span>
+                <div class="avatar">PU</div><span>PUP Comp</span>
               </div>
               <div style="display:flex;gap:.5rem;align-items:center">
-                <span class="post-date">Nov 25, 2024</span>
-                <button class="open-modal" aria-haspopup="dialog">Quick view</button>
+                <span class="post-date">Apr 2, 2019</span>
               </div>
             </div>
           </div>
@@ -316,28 +323,20 @@
     </div>
   </div>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <p class="footer-description">Your trusted resource for laptop troubleshooting and repair solutions. Expert-verified guides helping 50,000+ users solve their tech problems.</p>
-          <div class="footer-badges">
-            <span class="badge-outline">SSL Secured</span>
-            <span class="badge-outline">Privacy Protected</span>
-            <span class="badge-outline">Expert Verified</span>
-          </div>
+ <!-- Footer -->
+<footer class="footer" aria-label="Site footer">
+    <div class="container" style="padding:1.25rem 0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;">
+            <div style="color:var(--muted-foreground); font-size:.95rem;">
+                &copy; SLSU LUCENA. Your trusted resource for laptop troubleshooting and repair solutions.
+            </div>
+            <div style="display:flex; gap:.6rem; align-items:center;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <a href="mailto:techcare@gmail.com" style="color:var(--muted-foreground); font-weight:600;">techcare@gmail.com</a>
+            </div>
         </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; SLSU LUCENA.</p>
-        <div class="footer-contact">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-          <a href="mailto:techcare@gmail.com">techcare@gmail.com</a>
-        </div>
-      </div>
     </div>
-  </footer>
+</footer>
 
   <script src="script.js"></script>
 </body>
