@@ -1,56 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Expert laptop tips, maintenance guides, and tech insights. Learn how to keep your laptop running at peak performance.">
-    <title>Blog - Tech Tips & Insights | LaptopFix</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Expert laptop tips, maintenance guides, and tech insights. Learn how to keep your laptop running at peak performance."/>
+  <title>TechCare - Blog</title>
 
-       <script>
-      (function() {
-        try {
-          var theme = localStorage.getItem('theme');
-          if (theme === 'dark') document.documentElement.classList.add('dark');
-          // prevent transition flashes while CSS is applied
-          document.documentElement.classList.add('no-transition');
-          // safety remove after a short delay in case the rest of the page doesn't remove it
-          setTimeout(function(){ document.documentElement.classList.remove('no-transition'); }, 120);
-        } catch (e) { /* silent */ }
-      })();
-    </script>
-   
-    <!-- Inline CSS to ensure thumbnails cover the whole space -->
-    <style>
-      /* match the original icon slot and force the img to cover it */
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('theme');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        // prevent transition flashes while CSS is applied
+        document.documentElement.classList.add('no-transition');
+        // safety remove after a short delay in case the rest of the page doesn't remove it
+        setTimeout(function(){ document.documentElement.classList.remove('no-transition'); }, 120);
+      } catch (e) { /* silent */ }
+    })();
+  </script>
+
+ 
+
+  <!-- Responsive grid: 1 column (mobile), 2 columns (>=720px), 3 columns (>=1100px) -->
+  <style>
+    :root {
+      --thumb-ratio: 4 / 3;
+      --card-gap: 1rem;
+    }
+
+    .blog-posts {
+      display: grid;
+      gap: var(--card-gap);
+      grid-template-columns: 1fr; /* mobile: single column */
+    }
+
+    /* medium: 2 columns */
+    @media (min-width: 720px) {
+      .blog-posts {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* large: 3 columns */
+    @media (min-width: 1100px) {
+      .blog-posts {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .blog-post-card {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      align-items: stretch;
+      border-radius: 10px;
+      border: 1px solid var(--card-border, #e6e6e6);
+      background: var(--card, #fff);
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      font-size: 0.95rem;
+      height: 100%;
+    }
+
+    .post-image {
+      width: 100%;
+      aspect-ratio: var(--thumb-ratio);
+      display: block;
+      background: #f3f3f3;
+      overflow: hidden;
+      position: relative;
+      border-bottom: 1px solid var(--card-border, #e6e6e6);
+      min-height: 160px;
+    }
+    .post-image img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      transition: transform .35s ease;
+      background: transparent;
+    }
+    .blog-post-card:hover .post-image img {
+      transform: scale(1.02);
+    }
+
+    /* Larger screens use slightly taller thumbnails for better visual weight */
+    @media (min-width: 1200px) {
       .post-image {
-        width: 400px;
-        height: 100px;
-        flex: 0 0 220px; /* keep its size in flex layouts */
-        overflow: hidden;
-        background: #f3f3f3; /* fallback background while image loads */
-        display: block;
+        aspect-ratio: auto;
+        height: 225px;
+        min-height: 225px;
       }
-      .post-image img {
-        width: 100%;
-        height: 100%;
-        display: block;
-        object-fit: cover; /* cover the full container */
-      }
+    }
 
-      /* Optional: ensure alignment with the rest of the card if needed */
-      .blog-post-card {
-        display: flex;
-        gap: 1rem;
-        align-items: flex-start;
+    .post-content {
+      padding: 0.9rem 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+    }
+
+    .post-meta { color: var(--muted-foreground, #6b7280); font-size:.85rem; display:flex; gap:.5rem; align-items:center; margin-bottom:.4rem; }
+    .post-title { margin: 0 0 .4rem 0; font-size:1.025rem; font-weight:700; color:var(--foreground, #111827); }
+    .post-excerpt { margin: 0 0 .8rem 0; color:var(--muted-foreground, #6b7280); line-height:1.5; flex:1; font-size:.95rem; }
+
+    .post-footer { display:flex; justify-content:space-between; align-items:center; gap:.5rem; margin-top:.6rem; }
+    .open-modal { border:1px solid var(--card-border); background:transparent; padding:.25rem .5rem; border-radius:.375rem; font-size:.825rem; cursor:pointer; color:var(--foreground); }
+
+    .blog-post-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(16,24,40,0.06);
+      border-color: rgba(37,99,235,0.08);
+    }
+
+    /* Mobile: prefer 16:9 ratio to avoid letterboxing on many thumbnails */
+    @media (max-width: 720px) {
+      .post-image {
+        aspect-ratio: 16 / 9;
+        min-height: 160px;
+        height: auto;
       }
-      .post-content {
-        flex: 1;
-      }
-    </style>
+      .post-content { padding: .9rem 1rem; }
+    }
+
+    /* Defensive: ensure no black background shows behind images in dark mode */
+    .post-image, .post-image img { background: transparent !important; }
+    .dark .post-image { border-bottom-color: rgba(255,255,255,0.06); }
+  </style>
 </head>
 <body>
   <nav class="navbar">
@@ -304,7 +390,6 @@
     </div>
   </section>
 
-  <!-- Modal (single reusable modal for all cards). The script will inject an embedded YouTube iframe with autoplay when opened. -->
   <div id="modal-overlay" class="modal-overlay" aria-hidden="true" style="display:none;">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
       <button class="modal-close" aria-label="Close dialog">&times;</button>
@@ -328,17 +413,15 @@
     <div class="container" style="padding:1.25rem 0;">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;">
             <div style="color:var(--muted-foreground); font-size:.95rem;">
-                &copy; SLSU LUCENA. Your trusted resource for laptop troubleshooting and repair solutions.
+                &copy; SLSU LUCENA.
             </div>
             <div style="display:flex; gap:.6rem; align-items:center;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                 <a href="mailto:techcare@gmail.com" style="color:var(--muted-foreground); font-weight:600;">techcare@gmail.com</a>
             </div>
         </div>
     </div>
 </footer>
-
   <script src="script.js"></script>
 </body>
-
 </html>

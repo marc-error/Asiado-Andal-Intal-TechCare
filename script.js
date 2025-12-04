@@ -276,3 +276,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Update active link on page navigation
 window.addEventListener('popstate', updateActiveNavLink);
+

@@ -4,16 +4,39 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="Troubleshooting guides for laptop battery, performance, display, cooling and more." />
-  <title>Troubleshooting Guides - TechCare</title>
+  <title>TechCare - Troubleshoot</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  
+    <script>
+      (function() {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') document.documentElement.classList.add('dark');
+          // prevent transition flashes while CSS is applied
+          document.documentElement.classList.add('no-transition');
+          // safety remove after a short delay in case the rest of the page doesn't remove it
+          setTimeout(function(){ document.documentElement.classList.remove('no-transition'); }, 120);
+        } catch (e) { /* silent */ }
+      })();
+    </script>
 
-  <style>
-    /* Card split into media (top) + content (bottom) vertically.
-       Responsive: becomes two-column grid on wider viewports so smaller cards sit side-by-side. */
+ <style>
+
+    :root {
+      /* Central control for thumbnail ratio. Use 4/3 because YouTube hqdefault.jpg is 480x360 (4:3).
+         Adjust here if you change thumbnail source. */
+      --thumb-ratio: 4 / 3;
+
+      /* shared thumbnail / poster sizing */
+      --thumb-min-mobile: 220px;   /* mobile minimum height for thumbnails */
+      --thumb-min-desktop: 240px;  /* desktop minimum used at wide screens */
+      --thumb-max-desktop: 340px;  /* desktop maximum cap so cards don't grow too tall */
+    }
+
     .guide-grid {
       display: grid;
       gap: 1rem;
@@ -22,7 +45,7 @@
     }
 
     /* show two cards side-by-side on medium+ screens */
-    @media (min-width: 720px) {
+    @media (min-width: 820px) {
       .guide-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
@@ -42,38 +65,57 @@
       cursor: pointer;
       text-decoration: none;
       color: inherit;
-      /* slightly smaller visual footprint */
       font-size: 0.95rem;
+      height: 100%;
     }
 
-    /* Top media */
+    /* Top media
+       Use aspect-ratio driven by --thumb-ratio so thumbnails are proportional to YouTube originals.
+       Avoid forcing a mismatched fixed height that could reveal page background on some crops. */
     .post-image {
       width: 100%;
-      height: 160px; /* reduced height to make the card smaller */
-      min-height: 120px;
+      aspect-ratio: var(--thumb-ratio);        /* proportional by default (4:3) */
       display: block;
-      background: #f3f3f3;
+      background: #f3f3f3;                      /* neutral placeholder instead of black */
       overflow: hidden;
       position: relative;
+      border-bottom: 1px solid var(--card-border, #e6e6e6);
+
+      /* mobile safeguard so image doesn't get too small at narrow widths */
+      min-height: var(--thumb-min-mobile);
     }
     .post-image img {
       width: 100%;
       height: 100%;
       display: block;
-      object-fit: cover;
+      object-fit: cover;       /* ensure image always covers the box (no letterbox/black bars) */
+      object-position: center;
       transition: transform .35s ease;
+      background: transparent;
     }
     .blog-post-card:hover .post-image img {
       transform: scale(1.02);
     }
 
-    /* Content */
+    /* Instead of forcing an absolute height that can mismatch the aspect ratio,
+       use max-height so images can still cover their container without exposing background. */
+    @media (min-width: 1200px) {
+      .post-image {
+        /* keep the same aspect-ratio but cap height so cards don't grow too large */
+        aspect-ratio: var(--thumb-ratio);
+        max-height: var(--thumb-max-desktop);
+        min-height: var(--thumb-min-desktop);
+        height: auto;
+      }
+    }
+
+    /* CONTENT */
     .post-content {
-      padding: 0.9rem 1rem; /* reduced padding */
+      padding: 0.9rem 1rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border-top: 1px solid var(--card-border, #e6e6e6);
+      border-top: none;
       background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
     }
 
@@ -91,10 +133,12 @@
       border-color: rgba(37,99,235,0.08);
     }
 
-    /* Small screens keep adjusted image height */
-    @media (max-width: 720px) {
+    /* Mobile: keep a tall ratio but cap height so thumbnails don't dominate tiny screens */
+    @media (max-width: 100px) {
       .post-image {
-        height: 140px;
+        aspect-ratio: var(--thumb-ratio);
+        min-height: var(--thumb-min-mobile);
+        height: auto;
       }
       .post-content {
         padding: .9rem 1rem;
@@ -105,13 +149,57 @@
     .modal {
       display: flex;
       flex-direction: column;
-      max-height: 80vh; /* constrain modal height */
+      max-height: 80vh;
       overflow: hidden;
     }
     .modal-body {
-      overflow: auto; /* enable scrolling for modal content */
-      max-height: calc(80vh - 150px); /* leave space for header/footer (approx) */
+      overflow: auto;
+      max-height: calc(80vh - 150px);
       padding: 1rem 1.5rem;
+    }
+
+    /* Modal media poster styling — apply the same responsive behaviour as the card image.
+       This prevents the modal poster from showing a black band or not covering the container. */
+    .modal-media {
+      margin-top: 0.8rem;
+      display: block;
+    }
+
+    /* Ensure the modal poster and any "poster-card" use the same sizing rules as thumbnails.
+       This makes poster-card elements match the visible thumbnail size across breakpoints. */
+    .video-poster,
+    .poster-card {
+      width: 100%;
+      aspect-ratio: var(--thumb-ratio);
+      display: block;
+      overflow: hidden;
+      background: #f3f3f3;
+      border-radius: 6px;
+      min-height: var(--thumb-min-mobile);
+      max-height: 80vh;
+    }
+    .video-poster img,
+    .poster-card img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;       /* crucial: image covers the whole box */
+      object-position: center;
+      background: transparent; /* avoid default black background */
+      transition: transform .35s ease;
+    }
+    .video-poster:hover img {
+      transform: scale(1.02);
+    }
+
+    /* Keep poster/popup poster consistent on large screens with thumbnail caps */
+    @media (min-width: 1200px) {
+      .video-poster,
+      .poster-card {
+        aspect-ratio: var(--thumb-ratio);
+        height: var(--thumb-max-desktop);
+        min-height: var(--thumb-max-desktop);
+      }
     }
 
     /* Improve readability of step lists inside modal */
@@ -225,6 +313,17 @@
                     </svg>
                     <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                                <button class="mobile-menu-toggle" id="mobile-menu-toggle" data-testid="button-mobile-menu">
+                    <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
                 </button>
       </div>
@@ -353,9 +452,9 @@
                 <p class="post-excerpt">Identify and fix rapid battery drain issues with power optimization tips.</p>
               </div>
               <div class="post-footer">
-                <div class="post-author"><div class="avatar">SM</div><span>Sarah</span></div>
+                <div class="post-author"><div class="avatar">ET</div><span>EasyTechGeek</span></div>
                 <div style="display:flex;gap:.5rem;align-items:center">
-                  <span class="post-date">Dec 2024</span>
+                  <span class="post-date">Jun 28, 2025</span>
                   <button class="open-modal" aria-haspopup="dialog">Quick view</button>
                 </div>
               </div>
@@ -432,9 +531,9 @@
                 <p class="post-excerpt">Test battery condition and recalibrate for accurate charge reporting.</p>
               </div>
               <div class="post-footer">
-                <div class="post-author"><div class="avatar">JD</div><span>John</span></div>
+                <div class="post-author"><div class="avatar">PM</div><span>PC Monkey</span></div>
                 <div style="display:flex;gap:.5rem;align-items:center">
-                  <span class="post-date">Dec 2024</span>
+                  <span class="post-date">Jun 23, 2023</span>
                   <button class="open-modal" aria-haspopup="dialog">Quick view</button>
                 </div>
               </div>
@@ -494,9 +593,9 @@
                    data-category="Battery"
                    data-title="Charging Port Loose - Repair Tips"
                    data-desc="Diagnose a wobbly charging port, secure connections, and safe soldering tips for repair."
-                   data-video="https://www.youtube.com/watch?v=2Vv-BfVoq4g">
+                   data-video="https://www.youtube.com/watch?v=KJ-pC7sJtb4">
             <div class="post-image">
-              <img src="https://img.youtube.com/vi/2Vv-BfVoq4g/hqdefault.jpg" alt="Charging Port Loose - thumbnail" loading="lazy">
+              <img src="https://img.youtube.com/vi/KJ-pC7sJtb4/hqdefault.jpg" alt="Charging Port Loose - thumbnail" loading="lazy">
             </div>
             <div class="post-content">
               <div>
@@ -590,9 +689,9 @@
                 <p class="post-excerpt">Fix thermal issues with cleaning, cooling solutions, and thermal paste replacement.</p>
               </div>
               <div class="post-footer">
-                <div class="post-author"><div class="avatar">LW</div><span>Lisa</span></div>
+                <div class="post-author"><div class="avatar">PC</div><span>PC NP</span></div>
                 <div style="display:flex;gap:.5rem;align-items:center">
-                  <span class="post-date">Dec 2024</span>
+                  <span class="post-date">Nov 16, 2024</span>
                   <button class="open-modal" aria-haspopup="dialog">Quick view</button>
                 </div>
               </div>
@@ -670,9 +769,9 @@
                 <p class="post-excerpt">Diagnose and resolve noisy fan issues including cleaning and replacement.</p>
               </div>
               <div class="post-footer">
-                <div class="post-author"><div class="avatar">MC</div><span>Mike</span></div>
+                <div class="post-author"><div class="avatar">ET</div><span>EasyTechs</span></div>
                 <div style="display:flex;gap:.5rem;align-items:center">
-                  <span class="post-date">Dec 2024</span>
+                  <span class="post-date">Mar 25, 2025</span>
                   <button class="open-modal" aria-haspopup="dialog">Quick view</button>
                 </div>
               </div>
@@ -744,9 +843,9 @@
                 <p class="post-excerpt">Optimize cooling to prevent performance drops from overheating.</p>
               </div>
               <div class="post-footer">
-                <div class="post-author"><div class="avatar">AK</div><span>Anna</span></div>
+                <div class="post-author"><div class="avatar">JT</div><span>Jarrod'sTech</span></div>
                 <div style="display:flex;gap:.5rem;align-items:center">
-                  <span class="post-date">Dec 2024</span>
+                  <span class="post-date">Aug 23, 2024</span>
                   <button class="open-modal" aria-haspopup="dialog">Quick view</button>
                 </div>
               </div>
@@ -823,9 +922,9 @@
                 <p class="post-excerpt">How To Stop PC From Overheating And Shutting Down</p>
               </div>
               <div class="post-footer">
-                <div class="post-author"><div class="avatar">AK</div><span>Anna</span></div>
+                <div class="post-author"><div class="avatar">YS</div><span>YourSixStudios</span></div>
                 <div style="display:flex;gap:.5rem;align-items:center">
-                  <span class="post-date">Dec 2024</span>
+                  <span class="post-date">Dec 22, 2018</span>
                   <button class="open-modal" aria-haspopup="dialog">Quick view</button>
                 </div>
               </div>
@@ -878,292 +977,6 @@
             </template>
           </article>
         </div>
-      </section>
-
-      <!-- Performance -->
-        <h2 class="section-title">Performance Issues</h2>
-        <div class="guide-grid">
-          <article class="blog-post-card modal-trigger"
-                   data-category="Performance"
-                   data-title="Laptop Running Extremely Slow"
-                   data-desc="Speed up your laptop with disk cleanup, startup optimization, and RAM upgrades."
-                   data-video="https://www.youtube.com/watch?v=j2RW8Rt1nP4">
-            <div class="post-image">
-              <img src="https://img.youtube.com/vi/j2RW8Rt1nP4/hqdefault.jpg" alt="Slow Laptop - thumbnail" loading="lazy">
-            </div>
-            <div class="post-content">
-              <div>
-                <div class="post-meta"><span class="post-category">Performance</span> • <span>6 Min</span></div>
-                <h3 class="post-title">Laptop Running Extremely Slow</h3>
-                <p class="post-excerpt">Speed up your laptop with disk cleanup, startup optimization, and RAM upgrades.</p>
-              </div>
-              <div class="post-footer">
-                <div class="post-author"><div class="avatar">JD</div><span>John</span></div>
-                <div style="display:flex;gap:.5rem;align-items:center">
-                  <span class="post-date">Dec 2024</span>
-                  <button class="open-modal" aria-haspopup="dialog">Quick view</button>
-                </div>
-              </div>
-            </div>
-
-            <template class="steps-template">
-              <div class="steps-card">
-                <div class="tutorial-meta">
-                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Systematic steps to recover responsiveness.</span></div>
-                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Beginner → Advanced</span></div>
-                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>10–120 min</span></div>
-                </div>
-
-                <div>
-                  <strong>Tools & supplies</strong>
-                  <div class="tools-list">
-                    <span class="tool">Disk tools</span>
-                    <span class="tool">Antivirus</span>
-                    <span class="tool">Backup drive</span>
-                  </div>
-                </div>
-
-                <hr>
-
-                <strong>Procedure</strong>
-                <ol>
-                  <li>
-                    Diagnose resource usage.
-                    <div class="step-sub">Task Manager → check CPU, Disk, Memory. Identify runaway processes and services.</div>
-                  </li>
-                  <li>
-                    Malware & cleanup.
-                    <div class="step-sub">Run a full AV scan and remove junk files. Consider disk cleanup utilities and clearing browser caches.</div>
-                  </li>
-                  <li>
-                    Storage health & upgrades.
-                    <div class="step-sub">Check SMART and run chkdsk. Replace failing HDD with SSD for large performance gains.</div>
-                  </li>
-                  <li>
-                    Memory & software.
-                    <div class="step-sub">If memory is saturated, add more RAM. Update drivers and consider a clean OS install if software corruption is suspected.</div>
-                  </li>
-                </ol>
-
-                <div class="warning">
-                  Backup important data before performing drive operations or OS resets.
-                </div>
-
-                <div class="step-tip">Tip: Upgrading to an SSD typically has the single largest impact on perceived speed for older systems.</div>
-              </div>
-            </template>
-          </article>
-
-          <article class="blog-post-card modal-trigger"
-                   data-category="Performance"
-                   data-title="Windows Taking Forever to Start"
-                   data-desc="Fix slow boot times by optimizing startup programs and services."
-                   data-video="https://www.youtube.com/watch?v=E4QSuAdkD6c">
-            <div class="post-image">
-              <img src="https://img.youtube.com/vi/E4QSuAdkD6c/hqdefault.jpg" alt="Slow Boot - thumbnail" loading="lazy">
-            </div>
-            <div class="post-content">
-              <div>
-                <div class="post-meta"><span class="post-category">Performance</span> • <span>12 Min</span></div>
-                <h3 class="post-title">Windows Taking Forever to Start</h3>
-                <p class="post-excerpt">Fix slow boot times by optimizing startup programs and services.</p>
-              </div>
-              <div class="post-footer">
-                <div class="post-author"><div class="avatar">SM</div><span>Sarah</span></div>
-                <div style="display:flex;gap:.5rem;align-items:center">
-                  <span class="post-date">Dec 2024</span>
-                  <button class="open-modal" aria-haspopup="dialog">Quick view</button>
-                </div>
-              </div>
-            </div>
-
-            <template class="steps-template">
-              <div class="steps-card">
-                <div class="tutorial-meta">
-                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Speed up Windows boot by removing bottlenecks.</span></div>
-                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Beginner</span></div>
-                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>15–60 min</span></div>
-                </div>
-
-                <div>
-                  <strong>Tools & supplies</strong>
-                  <div class="tools-list">
-                    <span class="tool">Task Manager</span>
-                    <span class="tool">Disk utilities</span>
-                  </div>
-                </div>
-
-                <hr>
-
-                <strong>Procedure</strong>
-                <ol>
-                  <li>
-                    Manage startup items.
-                    <div class="step-sub">Task Manager → Startup: disable non-essential entries and reboot to measure improvement.</div>
-                  </li>
-                  <li>
-                    Disk & driver checks.
-                    <div class="step-sub">Run chkdsk / SMART checks and update drivers; remove pending updates that may be blocking boot.</div>
-                  </li>
-                  <li>
-                    Fast Startup & hardware.
-                    <div class="step-sub">Enable Fast Startup and consider replacing an HDD with SSD for the most dramatic improvement.</div>
-                  </li>
-                  <li>
-                    System refresh.
-                    <div class="step-sub">If persistent, backup and consider a clean Windows install to remove long-term software cruft.</div>
-                  </li>
-                </ol>
-
-                <div class="warning">
-                  Note: Disabling security-related startup items can reduce protection. Verify before disabling AV or system tools.
-                </div>
-
-                <div class="step-tip">Tip: Test after each change (one at a time) to track what produced the best improvement.</div>
-              </div>
-            </template>
-          </article>
-
-          <article class="blog-post-card modal-trigger"
-                   data-category="Performance"
-                   data-title="Programs Freezing or Not Responding"
-                   data-desc="Resolve application hang issues with memory optimization and driver updates."
-                   data-video="https://www.youtube.com/watch?v=TfLIf8vu3Zc">
-            <div class="post-image">
-              <img src="https://img.youtube.com/vi/TfLIf8vu3Zc/hqdefault.jpg" alt="Programs Freezing - thumbnail" loading="lazy">
-            </div>
-            <div class="post-content">
-              <div>
-                <div class="post-meta"><span class="post-category">Performance</span> • <span>6 Min</span></div>
-                <h3 class="post-title">Programs Freezing or Not Responding</h3>
-                <p class="post-excerpt">Resolve application hang issues with memory optimization and driver updates.</p>
-              </div>
-              <div class="post-footer">
-                <div class="post-author"><div class="avatar">MC</div><span>Mike</span></div>
-                <div style="display:flex;gap:.5rem;align-items:center">
-                  <span class="post-date">Dec 2024</span>
-                  <button class="open-modal" aria-haspopup="dialog">Quick view</button>
-                </div>
-              </div>
-            </div>
-
-            <template class="steps-template">
-              <div class="steps-card">
-                <div class="tutorial-meta">
-                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Steps to isolate and fix application freezes.</span></div>
-                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Beginner → Intermediate</span></div>
-                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>15–60 min</span></div>
-                </div>
-
-                <div>
-                  <strong>Tools & supplies</strong>
-                  <div class="tools-list">
-                    <span class="tool">Task Manager</span>
-                    <span class="tool">memtest86</span>
-                  </div>
-                </div>
-
-                <hr>
-
-                <strong>Procedure</strong>
-                <ol>
-                  <li>
-                    Inspect resource usage.
-                    <div class="step-sub">Open Task Manager to identify processes using excessive CPU, memory, or disk.</div>
-                  </li>
-                  <li>
-                    Update software & drivers.
-                    <div class="step-sub">Ensure the app and required runtimes (e.g., .NET, runtimes) are up-to-date. Update GPU drivers for GPU-accelerated apps.</div>
-                  </li>
-                  <li>
-                    Hardware checks.
-                    <div class="step-sub">Run memory diagnostics and disk checks to rule out failing components causing instability.</div>
-                  </li>
-                  <li>
-                    Clean environment.
-                    <div class="step-sub">Try clean boot or safe mode to isolate third-party conflicts, then reinstall the application if needed.</div>
-                  </li>
-                </ol>
-
-                <div class="warning">
-                  Note: Reinstalling or resetting applications may remove user data — backup application profiles where appropriate.
-                </div>
-
-                <div class="step-tip">Tip: Reproduce the freeze consistently to test solutions effectively (e.g., using the same dataset or workload).</div>
-              </div>
-            </template>
-          </article>
-
-          <article class="blog-post-card modal-trigger"
-                   data-category="Cooling"
-                   data-title="How To Fix Windows 10 Lagging"
-                   data-desc="Optimize your laptop windows."
-                   data-video="https://www.youtube.com/watch?v=hUt1sYLFMkQ">
-            <div class="post-image">
-              <img src="https://img.youtube.com/vi/hUt1sYLFMkQ/hqdefault.jpg" alt="How To Fix Windows 10 Lagging - thumbnail" loading="lazy">
-            </div>
-            <div class="post-content">
-              <div>
-                <div class="post-meta"><span class="post-category">Cooling</span> • <span>10 Min</span></div>
-                <h3 class="post-title">How To Fix Windows 10 Lagging</h3>
-                <p class="post-excerpt">Optimize your laptop windows.</p>
-              </div>
-              <div class="post-footer">
-                <div class="post-author"><div class="avatar">AK</div><span>Anna</span></div>
-                <div style="display:flex;gap:.5rem;align-items:center">
-                  <span class="post-date">Dec 2024</span>
-                  <button class="open-modal" aria-haspopup="dialog">Quick view</button>
-                </div>
-              </div>
-            </div>
-
-            <template class="steps-template">
-              <div class="steps-card">
-                <div class="tutorial-meta">
-                  <div class="meta-item"><strong>Overview:</strong>&nbsp;<span>Practical steps to reduce lag and improve responsiveness on Windows 10.</span></div>
-                  <div class="meta-item"><strong>Difficulty:</strong>&nbsp;<span>Beginner</span></div>
-                  <div class="meta-item"><strong>Est. time:</strong>&nbsp;<span>15–60 min</span></div>
-                </div>
-
-                <div>
-                  <strong>Tools & supplies</strong>
-                  <div class="tools-list">
-                    <span class="tool">Disk Cleanup</span>
-                    <span class="tool">Antivirus</span>
-                  </div>
-                </div>
-
-                <hr>
-
-                <strong>Procedure</strong>
-                <ol>
-                  <li>
-                    Remove resource-heavy startups.
-                    <div class="step-sub">Task Manager → Startup: disable unnecessary programs that start with Windows.</div>
-                  </li>
-                  <li>
-                    Clean storage and optimize.
-                    <div class="step-sub">Run Disk Cleanup, remove temporary files, and defragment (HDD) or optimize (SSD).</div>
-                  </li>
-                  <li>
-                    Update system & drivers.
-                    <div class="step-sub">Install latest Windows updates and vendor drivers, especially graphics and chipset.</div>
-                  </li>
-                  <li>
-                    Consider hardware upgrades.
-                    <div class="step-sub">If applicable, upgrade to SSD and increase RAM for sustained improvements.</div>
-                  </li>
-                </ol>
-
-                <div class="warning">
-                  Note: Make sure TRIM is enabled on SSDs and do not defragment SSDs with traditional defrag tools.
-                </div>
-
-                <div class="step-tip">Tip: Keep regular backups before performing large system changes or upgrades.</div>
-              </div>
-            </template>
-          </article>
-        </div>
     </div>
   </main>
 
@@ -1188,28 +1001,20 @@
     </div>
   </div>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <p class="footer-description">Your trusted resource for laptop troubleshooting and repair solutions. Expert-verified guides helping 50,000+ users solve their tech problems.</p>
-          <div class="footer-badges">
-            <span class="badge-outline">SSL Secured</span>
-            <span class="badge-outline">Privacy Protected</span>
-            <span class="badge-outline">Expert Verified</span>
-          </div>
+ <!-- Footer -->
+<footer class="footer" aria-label="Site footer">
+    <div class="container" style="padding:1.25rem 0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;">
+            <div style="color:var(--muted-foreground); font-size:.95rem;">
+                &copy; SLSU LUCENA.
+            </div>
+            <div style="display:flex; gap:.6rem; align-items:center;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <a href="mailto:techcare@gmail.com" style="color:var(--muted-foreground); font-weight:600;">techcare@gmail.com</a>
+            </div>
         </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; SLSU LUCENA.</p>
-        <div class="footer-contact">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-          <a href="mailto:techcare@gmail.com">techcare@gmail.com</a>
-        </div>
-      </div>
     </div>
-  </footer>
+</footer>
 
   <!-- Minimal modal wiring script: copies per-article template content into modal and opens/closes overlay -->
   <script>
