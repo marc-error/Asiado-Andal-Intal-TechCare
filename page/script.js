@@ -48,7 +48,7 @@ function updateActiveNavLink() {
         
         if (href === currentPath || (href === '/' && currentPath === '/index.html')) {
             link.classList.add('active');
-        } else if (href !== '/' && currentPath.includes(href)) {
+        } else if (href !== '/' && href && currentPath.includes(href)) {
             link.classList.add('active');
         }
     });
@@ -131,8 +131,8 @@ function filterFAQ(query) {
     const normalizedQuery = query.toLowerCase();
     
     faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question').textContent.toLowerCase();
-        const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+        const question = (item.querySelector('.faq-question') || { textContent: '' }).textContent.toLowerCase();
+        const answer = (item.querySelector('.faq-answer') || { textContent: '' }).textContent.toLowerCase();
         
         if (question.includes(normalizedQuery) || answer.includes(normalizedQuery)) {
             item.style.display = 'block';
@@ -142,34 +142,62 @@ function filterFAQ(query) {
     });
 }
 
-// Contact Form Validation (for contact page)
+// Contact Form: POSTs the form to the server using fetch and shows server response.
+// Important: this will only run if JS is enabled; with JS disabled the form will submit normally.
 function initContactForm() {
     const contactForm = document.getElementById('contact-form');
     
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+    if (!contactForm) return;
+    
+    contactForm.addEventListener('submit', async (e) => {
+        // Prevent default so we can POST with fetch and show inline feedback
+        e.preventDefault();
+        
+        const name = document.getElementById('name') ? document.getElementById('name').value.trim() : '';
+        const email = document.getElementById('email') ? document.getElementById('email').value.trim() : '';
+        const message = document.getElementById('message') ? document.getElementById('message').value.trim() : '';
+        
+        // Simple client-side validation
+        if (!name || !email || !message) {
+            showNotification('Please fill in all required fields', 'error');
+            return;
+        }
+        if (!isValidEmail(email)) {
+            showNotification('Please enter a valid email address', 'error');
+            return;
+        }
+        
+        // Build FormData from the form (includes select values etc.)
+        const formData = new FormData(contactForm);
+        const actionUrl = contactForm.getAttribute('action') || './contact_db.php';
+        
+        try {
+            const resp = await fetch(actionUrl, {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin',
+                headers: {
+                    // Do NOT set Content-Type when sending FormData; browser will set the boundary for multipart/form-data
+                    'X-Requested-With': 'fetch'
+                }
+            });
             
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const message = document.getElementById('message').value.trim();
+            const text = await resp.text();
             
-            // Simple validation
-            if (!name || !email || !message) {
-                showNotification('Please fill in all required fields', 'error');
-                return;
+            if (resp.ok) {
+                showNotification('Thank you! Your message has been sent successfully.', 'success');
+                contactForm.reset();
+                // optionally redirect or update the UI here
+            } else {
+                // server-side validation errors typically return status 400 with body text
+                showNotification(text || 'Server returned an error. See console for details.', 'error');
+                console.error('Server response:', resp.status, text);
             }
-            
-            if (!isValidEmail(email)) {
-                showNotification('Please enter a valid email address', 'error');
-                return;
-            }
-            
-            // Simulate form submission
-            showNotification('Thank you! Your message has been sent successfully.', 'success');
-            contactForm.reset();
-        });
-    }
+        } catch (err) {
+            showNotification('Network error while sending message.', 'error');
+            console.error('Fetch error:', err);
+        }
+    });
 }
 
 // Email Validation
@@ -198,9 +226,9 @@ function showNotification(message, type = 'info') {
         right: 1rem;
         padding: 1rem 1.5rem;
         border-radius: 0.5rem;
-        background-color: ${type === 'success' ? 'var(--primary)' : 'var(--destructive)'};
+        background-color: ${type === 'success' ? 'var(--primary,#2b8aef)' : 'var(--destructive,#e74c3c)'};
         color: white;
-        box-shadow: var(--shadow-lg);
+        box-shadow: var(--shadow-lg, 0 8px 24px rgba(0,0,0,0.15));
         z-index: 9999;
         animation: slideIn 0.3s ease-out;
     `;
@@ -279,7 +307,6 @@ window.addEventListener('popstate', updateActiveNavLink);
 
 // script.js - show a poster image (YouTube thumbnail) in the modal instead of embedding the video.
 // Clicking the poster opens the video on YouTube (avoids embedding errors).
-
 (function () {
   const overlay = document.getElementById('modal-overlay');
   const modal = overlay && overlay.querySelector('.modal');
@@ -374,30 +401,32 @@ window.addEventListener('popstate', updateActiveNavLink);
     if (!overlay) return;
     lastFocused = document.activeElement;
 
-    titleEl.textContent = data.title || '';
-    categoryEl.textContent = data.category || '';
-    descEl.textContent = data.desc || '';
+    if (titleEl) titleEl.textContent = data.title || '';
+    if (categoryEl) categoryEl.textContent = data.category || '';
+    if (descEl) descEl.textContent = data.desc || '';
 
-    if (data.video) {
+    if (data.video && linkEl) {
       linkEl.href = data.video;
       linkEl.style.display = 'inline-flex';
-    } else {
+    } else if (linkEl) {
       linkEl.style.display = 'none';
     }
 
     // Insert picture poster instead of embedding video
-    mediaContainer.innerHTML = '';
-    if (data.video) {
+    if (mediaContainer) mediaContainer.innerHTML = '';
+    if (data.video && mediaContainer) {
       const posterNode = createPosterNode(data.video, data.title || '');
       mediaContainer.appendChild(posterNode);
       mediaContainer.setAttribute('aria-hidden', 'false');
-    } else {
+    } else if (mediaContainer) {
       mediaContainer.innerHTML = '<div style="padding:1rem;color:var(--muted-foreground)">No preview available.</div>';
       mediaContainer.setAttribute('aria-hidden', 'true');
     }
 
-    overlay.style.display = '';
-    overlay.setAttribute('aria-hidden', 'false');
+    if (overlay) {
+      overlay.style.display = '';
+      overlay.setAttribute('aria-hidden', 'false');
+    }
     setTimeout(() => {
       modal && modal.focus();
       trapFocus(modal);
@@ -408,7 +437,7 @@ window.addEventListener('popstate', updateActiveNavLink);
   function closeModal() {
     if (!overlay) return;
     overlay.setAttribute('aria-hidden', 'true');
-    mediaContainer.innerHTML = '';
+    if (mediaContainer) mediaContainer.innerHTML = '';
     overlay.style.display = 'none';
     document.documentElement.style.overflow = '';
     if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
@@ -461,7 +490,5 @@ window.addEventListener('popstate', updateActiveNavLink);
     });
     observer.observe(overlay, { attributes: true, attributeFilter: ['aria-hidden'] });
   }
-
-  
 
 })();

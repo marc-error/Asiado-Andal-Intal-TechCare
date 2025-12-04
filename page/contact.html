@@ -264,7 +264,7 @@
                 <!-- Contact Form -->
                 <div class="contact-form">
                     <h2 style="margin-bottom: 1.5rem;">Send Us a Message</h2>
-                   <form action="contact_db.php" method="POST" id="contact-form">
+                   <form action="./contact_db.php" method="POST" id="contact-form">
                         <div class="form-group">
                             <label for="name" class="form-label">Name *</label>
                             <input type="text" name="name" id="name" class="form-input" placeholder="Your name" required data-testid="input-name">
@@ -303,7 +303,8 @@
                             <textarea id="message" name="message" class="form-textarea" placeholder="Describe your issue or question..." required data-testid="textarea-message"></textarea>
                         </div>
                         
-                        <input type="submit" class="form-submit" data-testid="button-submit">Send Message</input>
+                        <!-- FIXED: use a proper submit button (input was invalid) -->
+                        <button type="submit" class="form-submit" data-testid="button-submit">Send Message</button>
                     </form>
                 </div>
 
