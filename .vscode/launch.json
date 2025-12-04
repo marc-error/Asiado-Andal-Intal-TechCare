@@ -7,8 +7,8 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Open guides.html",
-            "file": "c:\\techcareORIGINAL\\Asiado-Andal-Intal-TechCare\\page\\guides.html"
+            "name": "Launch Chrome against localhost",
+            "file": "C:/Users/user/TechCare_Website/Asiado-Andal-Intal-TechCare/index.html"
         }
     ]
 }
